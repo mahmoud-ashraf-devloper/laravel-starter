@@ -32,12 +32,13 @@ class AuthenticatedSessionController extends Controller
         $request->session()->regenerate();
         
         // move the cart items to the logged in user
-        if($request->session()->has('cart_id')){
-            $cart = Cart::find(session('cart_id'));
-            if($cart){
-                $cart->first()->update(['user_id' => auth()->id()]);
-            }
-        }
+        // if($request->session()->has('cart_id')){
+        //     $cart = Cart::find(session('cart_id'));
+        //     if($cart){
+        //         $cart->first()->update(['user_id' => auth()->id()]);
+        //         session()->forget('cart_id');
+        //     }
+        // }
         
         return redirect()->intended(RouteServiceProvider::HOME);
     }

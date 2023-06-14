@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { router } from '@inertiajs/react'
-import SiteLayout from '../Layouts/SiteLayout'
 import { usePage } from '@inertiajs/inertia-react';
+import SiteLayout from '../Layouts/SiteLayout'
 
 function Login() {
 

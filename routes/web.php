@@ -6,6 +6,7 @@ use App\Http\Controllers\Site\ProductController;
 use App\Http\Controllers\Dashboard\ProfileController;
 use App\Http\Controllers\Dashboard\UserController;
 use App\Http\Controllers\Site\BlogController;
+use App\Http\Controllers\Site\ReviewController;
 use App\Http\Controllers\Site\ShopController;
 use App\Http\Controllers\Site\ShoppingCartController;
 use Illuminate\Support\Facades\Route;
@@ -61,6 +62,15 @@ Route::group([
     Route::post('/remove', [ShoppingCartController::class, 'remove'])->name('remove');
     Route::post('/increase', [ShoppingCartController::class, 'increase'])->name('increase');
     Route::post('/decrease', [ShoppingCartController::class, 'decrease'])->name('decrease');
+});
+
+// shopping cart routes
+Route::group([
+    'as' => 'reviews.',
+    'prefix' => 'reviews',
+], function(){
+    Route::post('/add', [ReviewController::class, 'addReview'])->name('add');
+    Route::get('/{product}', [ReviewController::class, 'allReviews'])->name('all');
 });
 
 // shop routes

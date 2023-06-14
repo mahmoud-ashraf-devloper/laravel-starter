@@ -12,7 +12,8 @@ class ShoppingCartController extends Controller
 {
     public function updateCart()
     {
-        return Cart::where(['id' => session()->get('cart_id'), 'user_id' => auth()->id()])->with(['items.product.images'])->first();
+        // dd(['id' => session()->get('cart_id'), 'user_id' => auth()->id()]);
+        return Cart::where(['user_id' => auth()->id()])->with(['items.product.images'])->first();
     }
 
     public function getAll()
