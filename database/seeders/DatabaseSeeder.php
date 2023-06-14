@@ -3,6 +3,11 @@
 namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+
+use App\Models\Category;
+use App\Models\CategoryProduct;
+use App\Models\Product;
+use App\Models\ProductImage;
 use Illuminate\Database\Seeder;
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
@@ -58,5 +63,34 @@ class DatabaseSeeder extends Seeder
         $editor->assignRole('Editor');
         \App\Models\User::factory(10)->create();
 
+
+        
+        
+        
+        \App\Models\Category::factory(6)->create();
+        \App\Models\Category::factory(30)->create()->each(function(Category $category)  {
+            $category->update(['parent_id' => rand(1, 6)]);
+        });
+
+        $urls = [
+            'http://127.0.0.1:8000/images/products/1.jpg',
+            'http://127.0.0.1:8000/images/products/2.jpg',
+            'http://127.0.0.1:8000/images/products/3.jpg',
+        ];
+    
+        \App\Models\Product::factory(200)->create()->each(function(Product $product) use($urls) {
+            foreach ($urls as $url) {
+                ProductImage::create([
+                    'product_id' => $product->id,
+                    'url' => $url,
+                ]);
+            } 
+
+            for ($i=1; $i <= 3 ; $i++) { 
+                CategoryProduct::create(['product_id' => $product->id,'category_id'=>rand(1, 36)]);
+            }   
+        });
+
+       
     }
 }

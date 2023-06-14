@@ -4,30 +4,19 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-
 use Cviebrock\EloquentSluggable\Sluggable;
+use Cviebrock\EloquentSluggable\SluggableScopeHelpers;
 
-
-class Product extends Model
+class Category extends Model
 {
     use HasFactory, Sluggable;
+
     protected $fillable = [
-        'title',
-        'price',
-        'weight',
-        'desc',
-        'short_desc',
-        'meta_desc',
-        'meta_title',
-        'meta_keywords',
-        'tax_status',
-        'sku',
-        'in_stock',
-        'visible',
-        'featured',
-        'images',
+        'name',
+        'parent_id',
         'slug',
     ];
+
     /**
      * Return the sluggable configuration array for this model.
      *
@@ -37,7 +26,7 @@ class Product extends Model
     {
         return [
             'slug' => [
-                'source' => 'title'
+                'source' => 'name'
             ]
         ];
     }
@@ -54,19 +43,8 @@ class Product extends Model
 
 
 
-    public function images()
-    {
-        return $this->hasMany(ProductImage::class);
-    }
 
-    public function categories()
-    {
-        return $this->hasMany(CategoryProduct::class);
-    }
-
-
-    public function carts()
-    {
-        return $this->belongsToMany(Cart::class);
+    public function products()  {
+        return $this->belongsToMany(Product::class, 'category_products');
     }
 }

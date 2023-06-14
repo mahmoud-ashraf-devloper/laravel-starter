@@ -17,7 +17,7 @@ return new class extends Migration
             $table->bigIncrements('id');
             $table->string('title');
 
-            $table->double('price', 5, 2)->nullable();
+            $table->integer('price')->nullable();
             $table->double('weight', 5, 2)->default(0);
 
             $table->text('desc');
@@ -36,7 +36,6 @@ return new class extends Migration
             $table->boolean('visible')->default(true);
             $table->boolean('featured')->default(false);
 
-            $table->string('images');
             $table->string('slug');
 
             $table->timestamps();

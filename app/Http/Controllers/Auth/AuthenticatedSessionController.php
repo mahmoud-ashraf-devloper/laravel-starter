@@ -4,20 +4,22 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\LoginRequest;
+use App\Models\Cart;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
+use Inertia\Inertia;
 
 class AuthenticatedSessionController extends Controller
 {
     /**
      * Display the login view.
      */
-    public function create(): View
+    public function create()
     {
-        return view('site.views.auth.login');
+        return Inertia::render('Login');
     }
 
     /**
@@ -28,7 +30,15 @@ class AuthenticatedSessionController extends Controller
         $request->authenticate();
 
         $request->session()->regenerate();
-
+        
+        // move the cart items to the logged in user
+        if($request->session()->has('cart_id')){
+            $cart = Cart::find(session('cart_id'));
+            if($cart){
+                $cart->first()->update(['user_id' => auth()->id()]);
+            }
+        }
+        
         return redirect()->intended(RouteServiceProvider::HOME);
     }
 

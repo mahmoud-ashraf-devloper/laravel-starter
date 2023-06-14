@@ -13,15 +13,16 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rules;
 use Illuminate\View\View;
+use Inertia\Inertia;
 
 class RegisteredUserController extends Controller
 {
     /**
      * Display the registration view.
      */
-    public function create(): View
+    public function create()
     {
-        return view('site.views.auth.register');
+        return Inertia::render('Register');
     }
 
     /**

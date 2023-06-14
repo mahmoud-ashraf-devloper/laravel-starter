@@ -217,7 +217,8 @@
                                 <del>
                                     <p class="text-sm text-gray-600 dark:text-gray-400 cursor-auto ml-2">$199</p>
                                 </del>
-                                <button type="button" onclick="addToCart({{ json_encode($item) }})"  class="ml-auto addToCartBtn">
+                                <button type="button" onclick="addToCart({{ json_encode($item) }})"
+                                    class="ml-auto addToCartBtn">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
                                         fill="currentColor" class="bi bi-bag-plus dark:text-white" viewBox="0 0 16 16">
                                         <path fill-rule="evenodd"
@@ -235,15 +236,13 @@
             <!-- 🛑 Grid Section - Ends Here -->
         </div>
     </div>
-    </div>
 
 
     <!-- drawer component -->
     <form action="#" method="get" id="drawer-more-filters"
         class="fixed top-0 left-0 z-50 w-full h-screen max-w-xs p-4 overflow-y-auto transition-transform -translate-x-full bg-white dark:bg-gray-800"
         tabindex="-1" aria-labelledby="drawer-label">
-        <h5 id="drawer-label"
-            class="inline-flex items-center mb-4 text-base font-semibold text-gray-500 uppercase ">
+        <h5 id="drawer-label" class="inline-flex items-center mb-4 text-base font-semibold text-gray-500 uppercase ">
             Apply filters
         </h5>
         <button type="button" data-drawer-dismiss="drawer-more-filters" aria-controls="drawer-more-filters"
@@ -622,6 +621,4 @@
             </div>
         </div>
     </form>
-
-   
 @endsection

@@ -1,11 +1,15 @@
 <?php
 
 use App\Http\Controllers\Dashboard\CategoryController;
-use App\Http\Controllers\Dashboard\ProductController;
+use App\Http\Controllers\Dashboard\DashboardController;
+use App\Http\Controllers\Site\ProductController;
 use App\Http\Controllers\Dashboard\ProfileController;
 use App\Http\Controllers\Dashboard\UserController;
 use App\Http\Controllers\Site\BlogController;
+use App\Http\Controllers\Site\ShopController;
+use App\Http\Controllers\Site\ShoppingCartController;
 use Illuminate\Support\Facades\Route;
+use Inertia\Inertia;
 
 /*
 |--------------------------------------------------------------------------
@@ -18,77 +22,15 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-$products = [
-    [
-        "id" => '1232asccas523sc',
-        "numberOfUnits" => 1,
-        "title" => "Product Title",
-        "price" => 202,
-        "images" => [
-            'http://127.0.0.1:8000/images/products/1.jpg',
-            'http://127.0.0.1:8000/images/products/2.jpg',
-            'http://127.0.0.1:8000/images/products/3.jpg',
-            'http://127.0.0.1:8000/images/products/4.jpg',
 
-        ]
-    ],
-    [
-        "id" => '1232casca523sc',
-        "numberOfUnits" => 1,
-        "title" => "Product Title",
-        "price" => 202,
-        "images" => [
-            'http://127.0.0.1:8000/images/products/1.jpg',
-            'http://127.0.0.1:8000/images/products/2.jpg',
-            'http://127.0.0.1:8000/images/products/4.jpg',
-            'http://127.0.0.1:8000/images/products/3.jpg',
-
-        ]
-    ],
-    [
-        "id" => '1232saca523sc',
-        "numberOfUnits" => 1,
-        "title" => "Product Title",
-        "price" => 202,
-        "images" => [
-            'http://127.0.0.1:8000/images/products/1.jpg',
-            'http://127.0.0.1:8000/images/products/3.jpg',
-            'http://127.0.0.1:8000/images/products/4.jpg',
-            'http://127.0.0.1:8000/images/products/2.jpg',
-
-        ]
-    ],
-    [
-        "id" => '1232sasac523sc',
-        "numberOfUnits" => 1,
-        "title" => "Product Title",
-        "price" => 202,
-        "images" => [
-            'http://127.0.0.1:8000/images/products/1.jpg',
-            'http://127.0.0.1:8000/images/products/2.jpg',
-            'http://127.0.0.1:8000/images/products/3.jpg',
-            'http://127.0.0.1:8000/images/products/4.jpg',
-
-        ]
-    ],
-    [
-        "id" => '123252asc',
-        "numberOfUnits" => 1,
-        "title" => "Product Title",
-        "price" => 202,
-        "images" => [
-            'http://127.0.0.1:8000/images/products/1.jpg',
-            'http://127.0.0.1:8000/images/products/2.jpg',
-            'http://127.0.0.1:8000/images/products/3.jpg',
-            'http://127.0.0.1:8000/images/products/4.jpg',
-
-        ]
-    ],
-];
 
 Route::get('/', function () {
-    return view('site.views.home');
+    return Inertia::render('Home');
 })->name('home');
+
+// Route::get('/', function () {
+//     return view('site.views.home');
+// })->name('home');
 
 Route::get('/cart', function () {
     return view('site.views.cart');
@@ -102,19 +44,30 @@ Route::get('/checkout', function () {
 Route::get('/payment', function () {
     return view('site.views.payment');
 })->name('payment');
-Route::get('/shop', function () use ($products) {
 
-    return view('site.views.shop', ['products' => $products]);
-})->name('shop');
-Route::get('/shop/product', function () use ($products){
-    
-    
-    return view('site.views.product', ['products' => $products, 'product' => $products[1]]);
-})->name('product');
 
-Route::get('/dashboard', function () {
-    return view('dashboard.views.home');
-})->middleware(['auth', 'verified'])->name('dashboard');
+// products routes
+Route::get('/products/{product}', [ProductController::class, 'show'])->name('product');
+
+
+
+// shopping cart routes
+Route::group([
+    'as' => 'shopping.cart.',
+    'prefix' => 'carts',
+], function(){
+    Route::post('/add', [ShoppingCartController::class, 'add'])->name('add');
+    Route::get('/', [ShoppingCartController::class, 'getAll'])->name('all');
+    Route::post('/remove', [ShoppingCartController::class, 'remove'])->name('remove');
+    Route::post('/increase', [ShoppingCartController::class, 'increase'])->name('increase');
+    Route::post('/decrease', [ShoppingCartController::class, 'decrease'])->name('decrease');
+});
+
+// shop routes
+Route::get('/shop', [ShopController::class, 'index'])->name('shop');
+Route::get('/shop/{category}', [ShopController::class, 'categoryProducts'])->name('category.products');
+
+Route::get('/dashboard', [DashboardController::class, 'index'])->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
