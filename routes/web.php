@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Dashboard\CategoryController;
 use App\Http\Controllers\Dashboard\DashboardController;
+use App\Http\Controllers\Dashboard\ProductController as DashboardProductController;
 use App\Http\Controllers\Site\ProductController;
 use App\Http\Controllers\Dashboard\ProfileController;
 use App\Http\Controllers\Dashboard\UserController;
@@ -22,6 +23,9 @@ use Inertia\Inertia;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
+
+require __DIR__ . '/auth.php';
+
 
 
 
@@ -50,12 +54,21 @@ Route::get('/payment', function () {
 // products routes
 Route::get('/products/{product}', [ProductController::class, 'show'])->name('product');
 
-
+// User Profile
+Route::group([
+    'prefix' => 'user',
+    'as' => 'user.',
+], function (){
+    
+    Route::get('/profile', [ProfileController::class, 'index']);
+    Route::post('/upload', [ProfileController::class, 'upload'])->name('upload.profile.picture');
+});
 
 // shopping cart routes
 Route::group([
     'as' => 'shopping.cart.',
     'prefix' => 'carts',
+    'middleware' => ['handdleSessionCartsAfterAuthentication']
 ], function(){
     Route::post('/add', [ShoppingCartController::class, 'add'])->name('add');
     Route::get('/', [ShoppingCartController::class, 'getAll'])->name('all');
@@ -69,7 +82,7 @@ Route::group([
     'as' => 'reviews.',
     'prefix' => 'reviews',
 ], function(){
-    Route::post('/add', [ReviewController::class, 'addReview'])->name('add');
+    Route::post('/add', [ReviewController::class, 'addReview'])->name('add')->middleware('auth');
     Route::get('/{product}', [ReviewController::class, 'allReviews'])->name('all');
 });
 
@@ -77,7 +90,8 @@ Route::group([
 Route::get('/shop', [ShopController::class, 'index'])->name('shop');
 Route::get('/shop/{category}', [ShopController::class, 'categoryProducts'])->name('category.products');
 
-Route::get('/dashboard', [DashboardController::class, 'index'])->middleware(['auth', 'verified'])->name('dashboard');
+
+
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -98,19 +112,40 @@ Route::group([
 
 // dashboard 
 Route::group([
-    'middleware' => ['auth', 'verified'],
+    'middleware' => ['auth', 'verified', 'role:Admin|Editor'],
     'prefix' => 'dashboard',
-    'as' => 'dashboard.'
+    'as' => 'dashboard'
 ], function () {
-    Route::get('products', [ProductController::class, 'index'])->name('products');
-    Route::get('categories', [CategoryController::class, 'index'])->name('categories');
+    Route::get('/', [DashboardController::class, 'index']);
+    Route::get('/products', [DashboardController::class, 'products'])->name('.products');
+    Route::get('/categories', [DashboardController::class, 'categories'])->name('.categories');
+    Route::get('/payments', [DashboardController::class, 'payments'])->name('.payments');
+    Route::get('/payments/offline', [DashboardController::class, 'offlinePayments'])->name('.offlinePayments');
+    Route::get('/users', [DashboardController::class, 'users'])->name('.users');
+    // Route::get('products', [ProductController::class, 'index'])->name('.products');
+    // Route::get('categories', [CategoryController::class, 'index'])->name('.categories');
 
 
     // Users
-    Route::get('users', [UserController::class, 'index'])->name('users');
-    Route::post('users/sync/permissions', [UserController::class, 'givePermissions'])->name('users.sync.permissions');
+    Route::post('users/sync/permissions', [UserController::class, 'givePermissions'])->name('.users.sync.permissions');
     
 });
 
+// dashboard Routes
 
-require __DIR__ . '/auth.php';
+
+
+
+// admin exclosive routes
+Route::group([
+    'middleware' => ['auth', 'role:Admin'], 
+    'as' => 'admin.'
+], function (){
+    Route::post('products/add', [DashboardProductController::class, 'add'])->name('products.add');
+    Route::post('products/{product}/update', [DashboardProductController::class, 'update'])->name('products.update');
+    Route::get('products/add-new-product', [DashboardProductController::class, 'index'])->name('products.add.new');
+    Route::post('products/{product}/delete', [DashboardProductController::class, 'delete'])->name('products.delete');
+    Route::post('products/{product}/image/{image}/delete', [DashboardProductController::class, 'deleteImage'])->name('products.image.delete');
+    Route::post('products/{product}/images/upload', [DashboardProductController::class, 'uploadImages'])->name('products.images.upload');
+});
+

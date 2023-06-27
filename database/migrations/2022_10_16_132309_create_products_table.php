@@ -23,14 +23,10 @@ return new class extends Migration
             $table->text('desc');
             $table->text('short_desc');
 
-            $table->text('meta_desc');
-            $table->text('meta_title');
-            $table->text('meta_keywords');
-
             $table->boolean('tax_status')->default(true);
             $table->string('sku')->unique();
-            
 
+            $table->foreignId('meta_id')->nullable()->references('id')->on('meta_data')->onDelete('CASCADE');
 
             $table->boolean('in_stock')->default(true);
             $table->boolean('visible')->default(true);

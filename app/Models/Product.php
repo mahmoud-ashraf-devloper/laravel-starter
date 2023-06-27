@@ -17,9 +17,7 @@ class Product extends Model
         'weight',
         'desc',
         'short_desc',
-        'meta_desc',
-        'meta_title',
-        'meta_keywords',
+        'meta_id',
         'tax_status',
         'sku',
         'in_stock',
@@ -59,9 +57,14 @@ class Product extends Model
         return $this->hasMany(ProductImage::class);
     }
 
+    public function meta()
+    {
+        return $this->belongsTo(MetaData::class, 'meta_id');
+    }
+
     public function categories()
     {
-        return $this->hasMany(CategoryProduct::class);
+        return $this->belongsToMany(Category::class, 'category_products');
     }
 
 

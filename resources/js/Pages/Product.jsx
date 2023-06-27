@@ -40,17 +40,19 @@ function Product() {
                             <div className="flex flex-col md:flex-row -mx-4">
                                 <div className="md:flex-1 px-4 h-full">
                                     <div className="pt-2 h-full">
-                                        <div className="h-64 md:h-96 rounded-lg  mb-4">
-                                            <Carousel slide={false}>
+                                        <div className={`h-64 md:h-96 rounded-lg bg-[url(${product.images[0].url})]`}>
+                                            <Carousel slide={true}>
                                                 {
                                                     product.images.map((image, index) => (
 
-                                                        <img
-                                                            key={index}
-                                                            className=" h-full w-full"
-                                                            alt="Product Image"
-                                                            src={image.url}
-                                                        />
+                                                        <div>
+                                                            <img
+                                                                key={index}
+                                                                className="object-contain h-full w-full"
+                                                                alt="Product Image"
+                                                                src={image.url}
+                                                            />
+                                                        </div>
                                                     ))
                                                 }
                                             </Carousel>
@@ -66,8 +68,8 @@ function Product() {
                                         <ul className="flex space-x-2">
                                             {
                                                 product.categories.map(item => (
-                                                    <li key={item.category.id}><a href={route('category.products', item.category.slug)}
-                                                        className="text-blue-600 hover:underline">#{item.category.name}</a></li>
+                                                    <li key={item.id}><a href={route('category.products', item.slug)}
+                                                        className="text-blue-600 hover:underline">#{item.name}</a></li>
                                                 ))
                                             }
                                         </ul>

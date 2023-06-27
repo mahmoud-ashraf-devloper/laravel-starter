@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\LoginRequest;
 use App\Models\Cart;
 use App\Providers\RouteServiceProvider;
+use App\Traits\PointShoppingCartToUserTrait;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -14,6 +15,7 @@ use Inertia\Inertia;
 
 class AuthenticatedSessionController extends Controller
 {
+    use PointShoppingCartToUserTrait;
     /**
      * Display the login view.
      */
@@ -28,17 +30,8 @@ class AuthenticatedSessionController extends Controller
     public function store(LoginRequest $request): RedirectResponse
     {
         $request->authenticate();
-
+        // PointShoppingCartToUserTrait::PointShoppingCartToUser();
         $request->session()->regenerate();
-        
-        // move the cart items to the logged in user
-        // if($request->session()->has('cart_id')){
-        //     $cart = Cart::find(session('cart_id'));
-        //     if($cart){
-        //         $cart->first()->update(['user_id' => auth()->id()]);
-        //         session()->forget('cart_id');
-        //     }
-        // }
         
         return redirect()->intended(RouteServiceProvider::HOME);
     }

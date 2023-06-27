@@ -10,100 +10,95 @@ use Illuminate\Support\Facades\DB;
 
 class ShoppingCartController extends Controller
 {
-    public function updateCart()
-    {
-        // dd(['id' => session()->get('cart_id'), 'user_id' => auth()->id()]);
-        return Cart::where(['user_id' => auth()->id()])->with(['items.product.images'])->first();
-    }
-
     public function getAll()
     {
-        return response()->json(['success' => true, 'data' => $this->updateCart()]);
+        $cart = [];
+        if (auth()->check()) {
+            $hasCart = Cart::where('user_id', auth()->id())->first();
+            if ($hasCart) {
+                $cart = $hasCart->load('items.product.images');
+            }
+        } else {
+            $hasCart = Cart::where('id', session()->get('cart_id'))->first();
+            if ($hasCart) {
+                $cart = $hasCart->load('items.product.images');
+            }
+        }
+        return response()->json(['success' => true, 'data' => $cart]);
     }
 
 
     public function add(Request $request)
     {
         $cart = [];
-
-        if (!$request->session()->get('cart_id') && !auth()->check()) {
-            $cart = Cart::create([]);
-            session(['cart_id' => $cart->id]);
-        }
-
-        // he might has a cart
         if (auth()->check()) {
             $hasCart = Cart::where('user_id', auth()->id())->first();
-
             if ($hasCart) {
                 $cart = $hasCart;
             } else {
                 $cart = Cart::create(['user_id' => auth()->id()]);
-                session(['cart_id' => $cart->id]);
             }
         }
 
+        // if not auth
         if (!auth()->check()) {
-            $hasCart = Cart::find(session()->get('cart_id'));
-
-            if ($hasCart) {
-                $cart = $hasCart->first();
-            } else {
+            if (!session()->get('cart_id')) {
                 $cart = Cart::create([]);
-                session(['cart_id' => $cart->id]);
+                session()->put('cart_id', $cart->id);
+            } else {
+                $hasCart = Cart::where('id', session()->get('cart_id'))->first();
+                if ($hasCart) {
+                    $cart = $hasCart;
+                }
             }
-
-            CartItem::create([
-                'cart_id' => $cart->id,
-                'product_id' => $request->product_id,
-            ]);
-            return response()->json(['success' => true, 'data' => $this->updateCart()]);
-        } else {
-            // if product exists just increase the qty
-            $product = CartItem::where(['product_id' => $request->product_id, 'cart_id' => $request->session()->get('cart_id')])->first();
-            if ($product) {
-                $product->update(['qty', ++$product->qty]);
-                return response()->json(['success' => true, 'data' => $this->updateCart()]);
-            }
-
-            CartItem::create([
-                'cart_id' => $cart->id,
-                'product_id' => $request->product_id,
-            ]);
-
-            return response()->json(['success' => true, 'data' => $this->updateCart()]);
         }
+
+        $product = CartItem::where(['product_id' => $request->product_id, 'cart_id' => $cart->id])->first();
+        if ($product) {
+            $product->update(['qty', ++$product->qty]);
+            return response()->json(['success' => true, 'data' => $this->refreshCartItems($cart->id)]);
+        }
+
+        CartItem::create([
+            'cart_id' => $cart->id,
+            'product_id' => $request->product_id,
+        ]);
+
+        return response()->json(['success' => true, 'data' => $this->refreshCartItems($cart->id)]);
     }
 
     public function remove(Request $request)
     {
         // if product exists just increase the qty
-        $product = CartItem::where(['product_id' => $request->product_id, 'cart_id' => $request->session()->get('cart_id')])->first();
+        $product = CartItem::where(['product_id' => $request->product_id, 'cart_id' => $request->cart_id])->first();
         if ($product) {
             $product->delete();
-            return response()->json(['success' => true, 'data' => $this->updateCart()]);
+            return response()->json(['success' => true, 'data' => $this->refreshCartItems($request->cart_id)]);
         }
+    }
+
+
+    public function refreshCartItems($cart_id)
+    {
+        return Cart::find($cart_id)->load(['items.product.images']);
     }
 
     public function increase(Request $request)
     {
-
         // if product exists just increase the qty
-        $product = CartItem::where(['product_id' => $request->product_id, 'cart_id' => $request->session()->get('cart_id')])->first();
-
-
+        $product = CartItem::where(['product_id' => $request->product_id, 'cart_id' => $request->cart_id])->first();
         if ($product) {
             $product->update(['qty', ++$product->qty]);
-            return response()->json(['success' => true, 'data' => $this->updateCart()]);
+            return response()->json(['success' => true, 'data' => $this->refreshCartItems($request->cart_id)]);
         }
     }
     public function decrease(Request $request)
     {
         // if product exists just increase the qty
-        $product = CartItem::where(['product_id' => $request->product_id, 'cart_id' => $request->session()->get('cart_id')])->first();
+        $product = CartItem::where(['product_id' => $request->product_id, 'cart_id' => $request->cart_id])->first();
         if ($product && $product->qty > 1) {
             $product->update(['qty', --$product->qty]);
-            return response()->json(['success' => true, 'data' => $this->updateCart()]);
+            return response()->json(['success' => true, 'data' => $this->refreshCartItems($request->cart_id)]);
         }
     }
 }

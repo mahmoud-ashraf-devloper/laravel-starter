@@ -18,10 +18,10 @@ class ProductController extends Controller
      */
     public function show(Product $product)
     {
-        $product = $product->load(['images', 'categories.category']);
+        $product = $product->load(['images', 'categories']);
         $relatedProducts = [];
         foreach($product->categories as $category){
-            $products = $category->category->products->load(['images','categories.category'])->take(5)->toArray();
+            $products = $category->products->load(['images','categories'])->take(5)->toArray();
             
             array_push($relatedProducts, ...$products);
         }

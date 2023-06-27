@@ -4,7 +4,9 @@ namespace App\Http\Middleware;
 
 use App\Http\Controllers\Site\ShoppingCartController;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Inertia\Middleware;
+use Tightenco\Ziggy\Ziggy;
 
 class HandleInertiaRequests extends Middleware
 {
@@ -44,8 +46,22 @@ class HandleInertiaRequests extends Middleware
 
 
             // Lazily...
-            'authenticated' => auth()->check(),
             'user' => auth()->user(),
+            // 'profile' => Auth::user()->profile ?? null,
+            
+            
+            'ziggy' => function () use ($request) {
+                return array_merge((new Ziggy())->toArray(), [
+                    'location' => $request->url(),
+                ]);
+            },
+            'user.authenticated' => auth()->check(),
+            'user.permissions' => function () use ($request) {
+                return ($request->user() ? $request->user()->getAllPermissions()->pluck('name') : null);
+            },
+            'user.roles' => function () use ($request) {
+                return ($request->user() ? $request->user()->roles()->pluck('name') : null);
+            },
         ]);
     }
 }

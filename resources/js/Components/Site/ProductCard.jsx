@@ -9,7 +9,7 @@ function ProductCard({ product }) {
                 <img src={product.images[0].url} alt="Product"
                     className="h-80 w-full object-contain rounded-t-xl  duration-500 hover:scale-105" />
                 <div className="px-4 py-3 w-full">
-                    <span className="text-gray-400 mr-3 uppercase text-xs">{product.categories[0].category.name}</span>
+                    <span className="text-gray-400 mr-3 uppercase text-xs">{product.categories[0].name}</span>
                     <p className="text-lg font-bold text-black dark:text-white truncate block capitalize">
                         {product.title}</p>
                     <div className="flex items-center my-1">

@@ -7,18 +7,18 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <title>{{ config('app.name', 'Laravel') }}</title>
-    
+
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
-    
+
     <script src="{{ asset('js/chartjs.min.js') }}"></script>
-    
+
     {{-- fontawesome --}}
     <link href="{{ asset('fontawesome/css/fontawesome.css') }}" rel="stylesheet">
     <link href="{{ asset('fontawesome/css/brands.css') }}" rel="stylesheet">
     <link href="{{ asset('fontawesome/css/solid.css') }}" rel="stylesheet">
-    
+
 
     @viteReactRefresh
     @vite(['resources/css/app.css', 'resources/js/app.jsx', 'resources/js/app.js'])
@@ -37,11 +37,10 @@
     </script>
 </head>
 
-<body class="font-sans antialiased dark:bg-gray-900">
+<body class="font-sans antialiased dark:bg-gray-900 ">
     @routes
     @inertia
 
-    <script src="{{ asset('js/modal.js') }}"></script>
 
 </body>
 

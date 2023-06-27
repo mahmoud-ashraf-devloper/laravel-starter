@@ -7,6 +7,7 @@ import ProductCard from '../Components/Site/ProductCard';
 function Shop() {
 
     let { products, mainCategories } = usePage().props;
+    console.log(products);
     return (
         <SiteLayout>
             <div className="antialiased">
@@ -78,16 +79,16 @@ function Shop() {
                                                         {
                                                             mainCategories.map((category, index) => (
                                                                 <option key={index}
-                                                                        className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">
-                                                                        {category.name}
+                                                                    className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">
+                                                                    {category.name}
                                                                 </option>
                                                             ))
                                                         }
                                                     </select>
-                                                    
+
                                                 </div>
-                                                
-                                                
+
+
                                             </div>
                                             <button
                                                 className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
@@ -503,6 +504,24 @@ function Shop() {
                     </div>
                 </div>
             </form>
+
+            <div className="flex flex-col items-center">
+                {/* <!-- Help text --> */}
+                <span className="text-sm text-gray-700 dark:text-gray-400">
+                    Showing <span className="font-semibold text-gray-900 dark:text-white">{products.from}</span> to <span className="font-semibold text-gray-900 dark:text-white">{products.to}</span> of <span className="font-semibold text-gray-900 dark:text-white">{products.total}</span> Entries
+                </span>
+                <div className="inline-flex mt-2 xs:mt-0">
+                    {/* <!-- Buttons --> */}
+                    <a href={products.prev_page_url} className="cursor-pointer inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-l hover:bg-blue-700 dark:bg-blue-600 dark:border-blue-700 dark:text-white dark:hover:bg-blue-700 dark:hover:text-white">
+                        <svg aria-hidden="true" className="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fillRule="evenodd" d="M7.707 14.707a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 1.414L5.414 9H17a1 1 0 110 2H5.414l2.293 2.293a1 1 0 010 1.414z" clipRule="evenodd"></path></svg>
+                        Prev
+                    </a>
+                    <a href={products.next_page_url} className="cursor-pointer inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-blue-600 border-0 border-l border-blue-700 rounded-r hover:bg-blue-700 dark:bg-blue-600 dark:border-blue-700 dark:text-white dark:hover:bg-blue-700 dark:hover:text-white">
+                        Next
+                        <svg aria-hidden="true" className="w-5 h-5 ml-2" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fillRule="evenodd" d="M12.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-2.293-2.293a1 1 0 010-1.414z" clipRule="evenodd"></path></svg>
+                    </a>
+                </div>
+            </div>
 
         </SiteLayout>
     )

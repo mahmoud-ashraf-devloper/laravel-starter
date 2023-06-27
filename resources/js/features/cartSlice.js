@@ -14,8 +14,9 @@ const pushItemsToCart = (cartItems) => {
     let cartItemsData = [];
     let totalPrice = 0;
     cartItems.forEach(element => {
+        
         totalPrice += element.product.price * element.qty;
-        cartItemsData.push({ ...element.product, quantity: element.qty });
+        cartItemsData.push({ ...element.product, cart_id: element.cart_id, quantity: element.qty });
     });
 
 
@@ -32,7 +33,6 @@ const pushItemsToCart = (cartItems) => {
 
 
 axios.get('http://127.0.0.1:8000/carts').then((res) => {
-    console.log(res.data);
     if (res.data.data.items) {
         pushItemsToCart(res.data.data.items);
     }
@@ -82,12 +82,14 @@ export const cartSlice = createSlice({
         },
         incrementQ(state, action) {
             const item = action.payload;
+            console.log(item);
             axios.post('http://127.0.0.1:8000/carts/increase', {
-                product_id: item.id
+                product_id: item.id,
+                cart_id: item.cart_id,
             }).then((res) => {
                 console.log(res);
                 let { items } = res.data.data
-                console.log('increase', items);
+                console.log('increase', items, res);
                 pushItemsToCart(items);
                 if (res.data.success == true) {
                     Swal.fire({
@@ -104,8 +106,10 @@ export const cartSlice = createSlice({
         },
         decrementQ(state, action) {
             const item = action.payload;
+            console.log('sts',state);
             axios.post('http://127.0.0.1:8000/carts/decrease', {
-                product_id: item.id
+                product_id: item.id,
+                cart_id: item.cart_id,
             }).then((res) => {
                 // console.log(res.data.data);
                 let { items } = res.data.data
@@ -127,7 +131,8 @@ export const cartSlice = createSlice({
         removeFromCart(state, action) {
             const item = action.payload;
             axios.post('http://127.0.0.1:8000/carts/remove', {
-                product_id: item.id
+                product_id: item.id,
+                cart_id: item.cart_id,
             }).then((res) => {
                 // console.log(res.data.data);
                 let { items } = res.data.data

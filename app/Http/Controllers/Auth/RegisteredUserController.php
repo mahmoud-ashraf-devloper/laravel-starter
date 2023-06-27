@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use App\Providers\RouteServiceProvider;
+use App\Traits\PointShoppingCartToUserTrait;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -17,6 +18,7 @@ use Inertia\Inertia;
 
 class RegisteredUserController extends Controller
 {
+    use PointShoppingCartToUserTrait;
     /**
      * Display the registration view.
      */
@@ -39,9 +41,6 @@ class RegisteredUserController extends Controller
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
         ])->validate();
 
-        
-
-        
 
         $user = User::create([
             'name' => $request->name,
@@ -52,6 +51,7 @@ class RegisteredUserController extends Controller
         event(new Registered($user));
 
         Auth::login($user);
+        // PointShoppingCartToUserTrait::PointShoppingCartToUser();
 
         return redirect(RouteServiceProvider::HOME);
     }

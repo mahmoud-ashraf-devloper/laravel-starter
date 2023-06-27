@@ -63,7 +63,7 @@ function Reviews({ product_id, product_slug }) {
                                 <div className='flex justify-between'>
 
                                     <div className="flex items-center mb-4 space-x-4">
-                                        <span className="w-10 h-10 rounded-full"><i className="fa-sharp fa-solid fa-user fa-lg"></i></span>
+                                        <span className="w-10 h-10 rounded-full dark:text-white"><i className="fa-sharp fa-solid fa-user fa-lg"></i></span>
                                         <div className="space-y-1 font-medium dark:text-white">
                                             <p>{review.user.name}<time dateTime="2014-08-16 19:00" className="block text-sm text-gray-500 dark:text-gray-400">Joined on {review.user.created_at}</time></p>
                                         </div>
@@ -71,7 +71,7 @@ function Reviews({ product_id, product_slug }) {
                                     <p className="mb-5 text-sm text-gray-500 dark:text-gray-400"><span>Written: <time dateTime="2017-03-03 19:00">{review.created_at}</time></span></p>
                                 </div>
                                 <div className="flex items-center mb-1">
-                                    <span className='pr-4 dark:'>Stars: </span>
+                                    <span className='pr-4 dark:text-white'>Stars: </span>
                                     {
                                         stars.map((item, index) => {
                                             if (index + 1 <= review.stars) {
