@@ -1,21 +1,24 @@
 import React, { useEffect } from 'react'
 import DashboardLayout from '../../Layouts/DashboardLayout'
-import UpdateUserModal from '../../Components/Dashboard/Modals/UpdateUserModal';
 import { useState } from 'react';
-import DeleteUSerModal from '../../Components/Dashboard/Modals/DeleteUSerModal';
-import Pagination from './../../Components/Dashboard/Pagination';
 
-function Categories({ categories, ziggy }) {
-  const [updateUser, setUpdateUser] = useState(categories.data[0]);
-  const [deleteUser, setDeleteUser] = useState(categories.data[0]);
-  useEffect(() => {
-    console.log(updateUser);
-  }, [updateUser])
+import AddNewCategory from '../../Components/Dashboard/Modals/AddNewCategory';
+import UpdateCategoryModal from '../../Components/Dashboard/Modals/UpdateCategoryModal';
+import { usePage } from '@inertiajs/inertia-react';
+import DeleteCategoryModal from '../../Components/Dashboard/Modals/DeleteCategoryModal';
 
-  const handleUpdateUser = (user) => {
-    setUpdateUser(user)
-    console.log(user, updateUser);
-  }
+function Categories({ user, ziggy }) {
+
+  const [categories, setCategories] = useState(usePage().props.categories)
+  const defaultCat = {
+    slug: "slug",
+    id: "0",
+    name: "Default",
+    sub_categories: [],
+  };
+  const [categoryToUpdate, setCategoryToUpdate] = useState(defaultCat);
+  const [categoryToDelete, setCategoryToDelete] = useState(defaultCat);
+
   return (
     <DashboardLayout>
       {/* <!-- Start block -. */}
@@ -46,6 +49,17 @@ function Categories({ categories, ziggy }) {
                 className="w-full md:w-auto flex flex-col md:flex-row space-y-2 md:space-y-0 items-stretch md:items-center justify-end md:space-x-3 flex-shrink-0">
 
                 <div className="flex items-center space-x-3 w-full md:w-auto">
+                  {
+                    user.roles == 'Admin' &&
+                    <div>
+                      <button type="button" id="newCategoryButton" data-modal-toggle="createCategoryModal" className="flex items-center justify-center text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">
+                        <svg className="h-3.5 w-3.5 mr-1.5 -ml-1" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                          <path clipRule="evenodd" fillRule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" />
+                        </svg>
+                        New Category
+                      </button>
+                    </div>
+                  }
                   <button id="actionsDropdownButton" data-dropdown-toggle="actionsDropdown"
                     className="w-full md:w-auto flex items-center justify-center py-2 px-4 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700"
                     type="button">
@@ -56,6 +70,7 @@ function Categories({ categories, ziggy }) {
                     </svg>
                     Actions
                   </button>
+
                   <div id="actionsDropdown"
                     className="hidden z-10 w-44 bg-white rounded divide-y divide-gray-100 shadow dark:bg-gray-700 dark:divide-gray-600">
                     <ul className="py-1 text-sm text-gray-700 dark:text-gray-200"
@@ -188,12 +203,13 @@ function Categories({ categories, ziggy }) {
                     <th scope="col" className="px-4 py-4">Id</th>
                     <th scope="col" className="px-4 py-3">Name</th>
                     <th scope="col" className="px-4 py-3">Is Main</th>
+                    <th scope="col" className="px-4 py-3">Sub Categories</th>
                     <th scope="col" className="px-4 py-3">Actions</th>
                   </tr>
                 </thead>
                 <tbody>
                   {
-                    categories.data.map(item => (
+                    categories.map(item => (
                       <tr key={item.id} className="border-b dark:border-gray-700">
                         <th scope="row"
                           className="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">
@@ -205,14 +221,21 @@ function Categories({ categories, ziggy }) {
                             :
                             <td className="px-4 py-3 max-w-[12rem] truncate "><span className='uppercase text-xs bg-green-500 text-white px-2 py-1 rounded-md font-bold'>main</span></td>
                         }
-
+                        <td className="">
+                          {
+                            item.sub_categories.length > 0 &&
+                            item.sub_categories.map((subCategory, index) => (
+                              <span key={item.id + index} className='uppercase text-xs bg-gray-500 text-white rounded-md font-bold px-2 py-1 mx-1'>{subCategory.name}</span>
+                            ))
+                          }
+                        </td>
                         <td className='flex justify-center'>
                           <div id="actions"
                             className="z-10 bg-white rounded divide-y divide-gray-100 shadow dark:bg-gray-700 dark:divide-gray-600 w-fit">
                             <ul className="py-1 text-sm flex justify-end" aria-labelledby="actions-button">
                               <li>
-                                <button data-modal-target="updateUserModal" onClick={() => { setUpdateUser(item) }}
-                                  data-modal-toggle="updateUserModal"
+                                <button data-modal-target="updateCategoryModal"
+                                  data-modal-toggle="updateCategoryModal" onClick={() => { setCategoryToUpdate(item) }}
                                   className="editBtn flex w-full items-center py-2 px-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white text-gray-700 dark:text-gray-200">
                                   <svg className="w-4 h-4" xmlns="http://www.w3.org/2000/svg"
                                     viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
@@ -225,8 +248,8 @@ function Categories({ categories, ziggy }) {
                               </li>
 
                               <li>
-                                <button type="button" data-modal-target="deleteModal" onClick={() => { setDeleteUser(item) }}
-                                  data-modal-toggle="deleteModal"
+                                <button type="button" data-modal-target="deleteCategoryModalConfirmation"
+                                  data-modal-toggle="deleteCategoryModalConfirmation" onClick={() => { setCategoryToDelete(item) }}
                                   className="flex w-full items-center py-2 px-2 hover:bg-gray-100 dark:hover:bg-gray-600 text-red-500 dark:hover:text-red-400">
                                   <svg className="w-4 h-4" viewBox="0 0 14 15" fill="none"
                                     xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
@@ -245,15 +268,13 @@ function Categories({ categories, ziggy }) {
                 </tbody>
               </table>
             </div>
-
-
-            <Pagination data={categories} ziggy={ziggy} />
           </div>
         </div>
       </section>
 
-      {/* <UpdateUserModal roles={roles} permissions={permissions} user={updateUser} />
-      <DeleteUSerModal user={deleteUser} /> */}
+      <AddNewCategory setCategories={setCategories} categories={categories} />
+      <DeleteCategoryModal setCategories={setCategories} category={categoryToDelete} />
+      <UpdateCategoryModal categories={categories} setCategories={setCategories} category={categoryToUpdate} />
 
     </DashboardLayout >
   )

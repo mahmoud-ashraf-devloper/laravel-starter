@@ -4,11 +4,12 @@ namespace App\Http\Controllers\Site;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Inertia\Inertia;
 
 class BlogController extends Controller
 {
     public function index()
     {
-        return view('site.views.blog');
+        return Inertia::render('Blog');
     }
 }

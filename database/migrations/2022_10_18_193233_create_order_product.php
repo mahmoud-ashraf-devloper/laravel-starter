@@ -14,9 +14,9 @@ return new class extends Migration
     public function up()
     {
         Schema::create('order_product', function (Blueprint $table) {
-            $table->integer('order_id');
-            $table->integer('product_id');
-            $table->integer('quantity')->default(1);
+            $table->foreignId('order_id')->references('id')->on('orders')->onDelete('CASCADE');
+            $table->foreignId('product_id')->references('id')->on('products')->onDelete('CASCADE');
+            $table->unsignedInteger('quantity')->default(1);
         });
     }
 

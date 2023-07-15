@@ -7,7 +7,7 @@ import axios from 'axios';
 import Swal from 'sweetalert2';
 function Profile({ user, profile }) {
   const [image, setImage] = useState();
-  const [profileImage, setProfileImage] = useState(profile.image_url);
+  const [profileImage, setProfileImage] = useState(profile?.image_url);
   const [imagePreviewUrl, setImagePreviewUrl] = useState();
 
   const handleImageChange = e => {
@@ -16,8 +16,6 @@ function Profile({ user, profile }) {
     setImagePreviewUrl(
       URL.createObjectURL(e.target.files[0])
     );
-
-
   };
 
   const uploadImage = async (e) => {
@@ -76,9 +74,9 @@ function Profile({ user, profile }) {
               <p className="mb-3 text-sm font-normal">
                 <a href="#" className="hover:underline"><span>@</span>{user.name}</a>
               </p>
-              <p className="mb-4 text-sm">{profile.bio}
-                <a href={profile.website} className="text-blue-600 dark:text-blue-500 hover:underline">
-                  {profile.website}
+              <p className="mb-4 text-sm">{profile?.bio}
+                <a href={profile?.website} className="text-blue-600 dark:text-blue-500 hover:underline">
+                  {profile?.website}
                 </a>
               </p>
               <ul className="flex text-sm">

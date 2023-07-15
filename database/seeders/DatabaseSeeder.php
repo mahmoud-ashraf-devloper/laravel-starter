@@ -6,6 +6,7 @@ namespace Database\Seeders;
 
 use App\Models\Category;
 use App\Models\CategoryProduct;
+use App\Models\Coupon;
 use App\Models\Product;
 use App\Models\ProductImage;
 use Illuminate\Database\Seeder;
@@ -91,6 +92,11 @@ class DatabaseSeeder extends Seeder
             }   
         });
 
+        Coupon::factory()->create(); // seeding test-coupon
        
+
+        $this->call(CountriesTableSeeder::class);
+        $this->call(StatesTableSeeder::class);
+        $this->call(CitiesTableSeeder::class);
     }
 }

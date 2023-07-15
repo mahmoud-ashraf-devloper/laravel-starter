@@ -2,7 +2,6 @@
 
 @section('main')
     <div class="max-w-[88rem] mx-auto relative z-10 flex flex-col min-h-screen bg-white dark:bg-gray-900 dark:text-gray-400">
-
         <main class="grow">
             <main class="pt-6 pb-8 bg-white lg:pb-16 dark:bg-gray-900">
                 <div class="flex justify-between px-4 mx-auto max-w-8xl">

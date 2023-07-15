@@ -3,6 +3,8 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -46,7 +48,11 @@ class User extends Authenticatable
     ];
     protected $with  = ['roles', 'profile'];
 
-
+    public function getCreatedAtAttribute()
+    {
+        
+        return Carbon::make($this->attributes['created_at'])->diffForHumans();
+    }
 
     public function profile()
     {
@@ -58,7 +64,13 @@ class User extends Authenticatable
         return $this->hasOne(Cart::class);
     }
 
+    public function addresses()
+    {
+        return $this->belongsToMany(Address::class);
+    }
 
-
-
+    public function orders()
+    {
+        return $this->hasMany(Order::class, 'user_id', 'id');
+    }
 }

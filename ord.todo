@@ -1,0 +1,11 @@
+orders 
+    id
+    coupon
+    discount
+    total_price
+
+
+order_products
+    order_id
+    product_id
+    quantity

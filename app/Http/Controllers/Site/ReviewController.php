@@ -12,23 +12,16 @@ use function GuzzleHttp\Promise\each;
 
 class ReviewController extends Controller
 {
-    public function returnReviews($data)
-    {
-        foreach ($data as $index => $review) {
-            $data[$index]['created_at'] = Carbon::make($data[$index]['created_at'])->diffForHumans();
-            $data[$index]['user']['created_at'] = Carbon::make($data[$index]['user']['created_at'])->diffForHumans();
-        }
-        return $data;
-    }
+
 
     public function addReview(Request $request)
     {
 
         $validated = $request->validate([
-            'user_id' =>'required|exists:users,id',
-            'product_id' =>'required|exists:products,id',
-            'review' =>'required|string',
-            'rate' =>'required|int|min:1|max:5',
+            'user_id' => 'required|exists:users,id',
+            'product_id' => 'required|exists:products,id',
+            'review' => 'required|string',
+            'rate' => 'required|int|min:1|max:5',
         ]);
 
         $review = Review::create([
@@ -45,8 +38,6 @@ class ReviewController extends Controller
 
     public function allReviews(Product $product)
     {
-        $data = $product->reviews->load('user')->toArray();
-        $formated_data = $this->returnReviews($data);
-        return response()->json($formated_data);
+        return response()->json($product->reviews->load('user'));
     }
 }

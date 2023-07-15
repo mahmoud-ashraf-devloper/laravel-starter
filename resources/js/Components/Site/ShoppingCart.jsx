@@ -1,10 +1,13 @@
 import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { decrementQ, incrementQ, removeFromCart } from '../../features/cartSlice';
+import { usePage } from '@inertiajs/inertia-react';
+import { redirect } from "react-router-dom";
 
 function ShoppingCart() {
     let { cartItems, totalPrice } = useSelector(state => state.cart);
     const dispatch = useDispatch();
+    // const router = 
 
     return (
         <div id="shopping-cart"
@@ -52,9 +55,9 @@ function ShoppingCart() {
                                             <p className="text-gray-500">Qty {item.quantity}</p>
 
                                             <div className="flex">
-                                                <button onClick={ () => {dispatch(incrementQ(item))}} type="button" className="font-medium text-white p-1 px-3 py-2 text-xs rounded-l-md  bg-blue-600 hover:bg-blue-500"><i className="fa-solid fa-plus"></i></button>
-                                                <button onClick={ () => {dispatch(decrementQ(item))}} type="button" className="font-medium text-white p-1 px-3 py-2 text-xs rounded-r-md bg-blue-600 hover:bg-blue-500"><i className="fa-solid fa-minus"></i></button>
-                                                <button onClick={ () => {dispatch(removeFromCart(item))}} type="button" className="font-medium text-white p-1 px-3 py-2 text-xs rounded-full bg-red-600 hover:bg-red-500 ml-2"><i className="fa-solid fa-trash"></i></button>
+                                                <button onClick={() => { dispatch(incrementQ(item)) }} type="button" className="font-medium text-white p-1 px-3 py-2 text-xs rounded-l-md  bg-blue-600 hover:bg-blue-500"><i className="fa-solid fa-plus"></i></button>
+                                                <button onClick={() => { dispatch(decrementQ(item)) }} type="button" className="font-medium text-white p-1 px-3 py-2 text-xs rounded-r-md bg-blue-600 hover:bg-blue-500"><i className="fa-solid fa-minus"></i></button>
+                                                <button onClick={() => { dispatch(removeFromCart(item)) }} type="button" className="font-medium text-white p-1 px-3 py-2 text-xs rounded-full bg-red-600 hover:bg-red-500 ml-2"><i className="fa-solid fa-trash"></i></button>
                                             </div>
                                         </div>
                                     </div>
@@ -73,8 +76,8 @@ function ShoppingCart() {
                     <p className="mt-0.5 text-sm text-gray-500 dark:text-white">Shipping and taxes calculated at checkout.
                     </p>
                     <div className="mt-6">
-                        <a href="{{ route('checkout') }}"
-                            className="flex items-center justify-center rounded-md border border-transparent bg-blue-600 px-6 py-3 text-base font-medium text-white shadow-sm hover:bg-blue-700">Checkout</a>
+                        <a href={route('cart')}
+                            className="flex items-center justify-center rounded-md border border-transparent bg-blue-600 px-6 py-3 text-base font-medium text-white shadow-sm hover:bg-blue-700">View Cart</a>
                     </div>
                     <div className="mt-6 flex justify-center text-center text-sm text-gray-500">
                         <p>

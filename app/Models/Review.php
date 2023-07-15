@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -18,7 +19,11 @@ class Review extends Model
     ];
 
 
-
+    public function getCreatedAtAttribute()
+    {
+        
+        return Carbon::make($this->attributes['created_at'])->diffForHumans();
+    }
 
     public function user()
     {

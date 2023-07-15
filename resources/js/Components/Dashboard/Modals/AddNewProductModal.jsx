@@ -43,8 +43,8 @@ function AddNewProductModal({ categories, setProducts }) {
         setMultiSelect(arrayOfOptions)
     }, []);
 
-    const [imagesPreview, setImagesPreview] = useState([]);
     const [loading, setLoading] = useState(false);
+    const [imagesPreview, setImagesPreview] = useState([]);
 
     const resetForm = () => {
         setImagesPreview([]);

@@ -2,7 +2,9 @@ import React from 'react'
 
 function Pagination({data, ziggy}) {
     return (
-        <footer className="flex flex-col md:flex-row justify-between items-start md:items-center space-y-3 md:space-y-0 p-4"
+        <div className="flex justify-center">
+
+        <div className="max-w-xl flex flex-col md:flex-row justify-between items-start md:items-center space-y-3 space-x-3 md:space-y-0 p-4"
             aria-label="Table navigation">
             <span className="text-sm font-normal text-gray-500 dark:text-gray-400">
                 Showing
@@ -114,7 +116,8 @@ function Pagination({data, ziggy}) {
                     </li>
                 }
             </ul>
-        </footer>
+        </div>
+        </div>
     )
 }
 

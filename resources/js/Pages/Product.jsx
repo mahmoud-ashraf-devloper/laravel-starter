@@ -102,9 +102,10 @@ function Product() {
                 </div>
             </section>
 
-            {/* {{-- Reviews --}} */}
-            <Reviews product_id={product.id} product_slug={product.slug} />
-
+            <section className="max-w-7xl md:mx-auto px-4 sm:px-6 lg:px-8 mt-44 md:mt-4">
+                {/* {{-- Reviews --}} */}
+                <Reviews product_id={product.id} product_slug={product.slug} />
+            </section>
             {/* {{-- Relative Products --}} */}
             <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-20">
                 <h4 className="text-2xl font-bold dark:text-white my-10">See Also</h4>

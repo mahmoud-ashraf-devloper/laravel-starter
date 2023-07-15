@@ -3,8 +3,10 @@
 namespace App\Http\Controllers\Dashboard;
 
 use App\Http\Controllers\Controller;
+use App\Models\Order;
 use App\Models\Profile;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
 
 class ProfileController extends Controller
@@ -39,6 +41,10 @@ class ProfileController extends Controller
 
     public function orders()
     {
-        return view('site.views.orders');
+        $orders = Order::where('user_id' , auth()->id())->get()->each(function($order){
+            $order->load(['products.images', 'products.categories']);
+        });
+
+        return Inertia::render('Orders', ['orders' =>  $orders ]);
     }
 }

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Dashboard;
 
 use App\Http\Controllers\Controller;
 use App\Models\Category;
+use App\Models\Order;
 use App\Models\Product;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -19,7 +20,7 @@ class DashboardController extends Controller
     }
     public function users()
     {
-        $data = User::with(['profile','roles'=> fn($q)=>$q->select('name')->pluck('name')])->paginate(15);
+        $data = User::with(['profile', 'roles' => fn ($q) => $q->select('name')->pluck('name')])->paginate(15);
         $roles = Role::all(['name', 'id']);
         $permissions = Permission::all(['name', 'id']);
         return Inertia::render('Dashboard/Users', [
@@ -28,13 +29,21 @@ class DashboardController extends Controller
             'roles' => $roles,
         ]);
     }
+
     public function categories()
     {
-        $data = Category::paginate(15);
+        $data = Category::with('subCategories')->latest()->get();
         return Inertia::render('Dashboard/Categories', [
             'categories' => $data,
         ]);
     }
+
+    public function orders()
+    {
+        $orders = Order::with(['products.images', 'products.categories'])->paginate(15);
+        return Inertia::render('Dashboard/Orders', ['orders' => $orders]);
+    }
+
     public function products()
     {
         $data = Product::with(['categories', 'images'])->latest()->paginate(15);
@@ -44,10 +53,12 @@ class DashboardController extends Controller
             'categories' => $categories,
         ]);
     }
+
     public function payments()
     {
         return Inertia::render('Dashboard/Payments');
     }
+
     public function offlinePayments()
     {
         return Inertia::render('Dashboard/OfflinePayments');

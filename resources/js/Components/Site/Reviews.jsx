@@ -30,7 +30,6 @@ function Reviews({ product_id, product_slug }) {
     ];
 
     return (
-        <section className="max-w-7xl mx-auto px-2 sm:px-6 lg:px-8 ">
             <div className="bg-white dark:bg-gray-900">
                 <div className="mx-auto">
                     <div className="flex justify-between items-center mb-6">
@@ -59,8 +58,8 @@ function Reviews({ product_id, product_slug }) {
                     {
                         reviews.map((review, index) => (
                             <article key={review.id} className='my-10 relative px-4'>
-                                <div className='w-1 h-32 rounded-md bg-blue-600  absolute md:-left-6 -left-2'></div>
-                                <div className='flex justify-between'>
+                                <div className='w-1 h-32 rounded-md bg-blue-600  absolute '></div>
+                                <div className='flex justify-between pl-6'>
 
                                     <div className="flex items-center mb-4 space-x-4">
                                         <span className="w-10 h-10 rounded-full dark:text-white"><i className="fa-sharp fa-solid fa-user fa-lg"></i></span>
@@ -70,7 +69,7 @@ function Reviews({ product_id, product_slug }) {
                                     </div>
                                     <p className="mb-5 text-sm text-gray-500 dark:text-gray-400"><span>Written: <time dateTime="2017-03-03 19:00">{review.created_at}</time></span></p>
                                 </div>
-                                <div className="flex items-center mb-1">
+                                <div className="flex items-center mb-1 pl-6">
                                     <span className='pr-4 dark:text-white'>Stars: </span>
                                     {
                                         stars.map((item, index) => {
@@ -80,7 +79,7 @@ function Reviews({ product_id, product_slug }) {
                                         })
                                     }
                                 </div>
-                                <p className="mb-2 text-gray-500 dark:text-gray-400">{review.review}</p>
+                                <p className="mb-2 text-gray-500 dark:text-gray-400 pl-6">{review.review}</p>
 
                             </article>
 
@@ -89,10 +88,9 @@ function Reviews({ product_id, product_slug }) {
                     }
 
                 </div>
+                {user && <AddReviewModal product_id={product_id} product_slug={product_slug} />}
             </div>
-            {user && <AddReviewModal product_id={product_id} product_slug={product_slug} />}
 
-        </section>
     )
 }
 
