@@ -5,6 +5,8 @@ import { usePage } from '@inertiajs/inertia-react';
 import { redirect } from "react-router-dom";
 
 function ShoppingCart() {
+    const {currency} = usePage().props
+
     let { cartItems, totalPrice } = useSelector(state => state.cart);
     const dispatch = useDispatch();
     // const router = 
@@ -47,7 +49,7 @@ function ShoppingCart() {
                                                 <h3>
                                                     <a href="#">{item.title}</a>
                                                 </h3>
-                                                <p className="ml-4">${item.price * item.quantity}</p>
+                                                <p className="ml-4">{currency.symbol}{item.price * item.quantity}</p>
                                             </div>
                                             <p className="mt-1 text-sm text-gray-500">Salmon</p>
                                         </div>
@@ -70,7 +72,7 @@ function ShoppingCart() {
 
                 <div className="border-t border-gray-200 py-6 px-4 sm:px-6">
                     <div className="flex justify-between text-base font-medium text-gray-900 dark:text-white">
-                        <p id="total">Total Price for {cartItems.length}Qty is ${totalPrice}</p>
+                        <p id="total">Total Price for {cartItems.length}Qty is {currency.symbol}{totalPrice}</p>
 
                     </div>
                     <p className="mt-0.5 text-sm text-gray-500 dark:text-white">Shipping and taxes calculated at checkout.

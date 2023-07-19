@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 
+use App\Helpers\Helper;
 use App\Http\Controllers\Site\ShoppingCartController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -47,8 +48,9 @@ class HandleInertiaRequests extends Middleware
 
             // Lazily...
             'user' => auth()->user(),
-            // 'profile' => Auth::user()->profile ?? null,
-            
+            'currency' => Helper::getCurrency((session()->get('currency') ? session()->get('currency') : 'USD')),
+            'profile' => Auth::user()->profile ?? null,
+
             'message' => session()->get('message'),
             'error' => session()->get('error'),
             'ziggy' => function () use ($request) {

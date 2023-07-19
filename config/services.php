@@ -30,5 +30,10 @@ return [
         'secret' => env('AWS_SECRET_ACCESS_KEY'),
         'region' => env('AWS_DEFAULT_REGION', 'us-east-1'),
     ],
+    
+    // currency convertor api key
+    'currency_convertor' => [
+        'key' => env('CURRENCY_CONVERTOR_API_KEY'),
+    ],
 
 ];

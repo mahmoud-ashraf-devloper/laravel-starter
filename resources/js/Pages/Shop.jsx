@@ -1,6 +1,6 @@
 import React from 'react'
 import SiteLayout from './../Layouts/SiteLayout';
-
+import { toast, ToastContainer } from 'react-toastify';
 import { usePage } from '@inertiajs/inertia-react';
 import ProductCard from '../Components/Site/ProductCard';
 import Pagination from './../Components/Dashboard/Pagination';
@@ -505,7 +505,7 @@ function Shop({ ziggy, products, mainCategories }) {
             </form>
                 <Pagination data={products} ziggy={ziggy} />
             
-
+<ToastContainer />
         </SiteLayout>
     )
 }

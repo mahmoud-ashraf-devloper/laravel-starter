@@ -9,9 +9,10 @@ class ProductImage extends Model
 {
     use HasFactory;
 
+
     protected $fillable = [
         'product_id',
-        'url'
+        'image_id'
     ];
 
     public $timestamps = false;
@@ -20,4 +21,10 @@ class ProductImage extends Model
     {
         return $this->belongsTo(Product::class);
     }
+    
+    public function image()
+    {
+        return $this->belongsTo(Image::class);
+    }
+
 }

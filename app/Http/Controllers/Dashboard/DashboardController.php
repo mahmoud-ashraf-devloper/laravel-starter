@@ -16,7 +16,19 @@ class DashboardController extends Controller
 {
     public function index()
     {
-        return Inertia::render('Dashboard/Home');
+        $orders = Order::where('payment_status', true)->get(['discount', 'total_price']);
+        return Inertia::render('Dashboard/Home', [
+            'data' => [
+                'products' => Product::count(),
+                'categories' => Category::count(),
+                'orders' => [
+                    'count' => Order::count(),
+                    'total_payments' => round($orders->sum('total_price'), 2),
+                    'discounts' => round($orders->sum('discount'), 2),
+                ],
+                'users' => User::count(),
+            ]
+        ]);
     }
     public function users()
     {

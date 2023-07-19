@@ -26,12 +26,12 @@ class ProfileController extends Controller
 
             $profile = Profile::where('user_id', auth()->id())->first();
             if ($profile) {
-                if($profile->image_url){
-                    unlink(public_path('images/profiles/').$profile->image_url);
+                if ($profile->image_url) {
+                    unlink(public_path('images/profiles/') . $profile->image_url);
                 }
                 $profile->update(['image_url' => $filename]);
             } else {
-                $profile = Profile::create(['user_id' => auth()->id()]);
+                $profile = Profile::create(['user_id' => auth()->id(), 'image_url' =>  $filename]);
             }
 
             return $profile;
@@ -41,10 +41,10 @@ class ProfileController extends Controller
 
     public function orders()
     {
-        $orders = Order::where('user_id' , auth()->id())->get()->each(function($order){
+        $orders = Order::where('user_id', auth()->id())->get()->each(function ($order) {
             $order->load(['products.images', 'products.categories']);
         });
 
-        return Inertia::render('Orders', ['orders' =>  $orders ]);
+        return Inertia::render('Orders', ['orders' =>  $orders]);
     }
 }

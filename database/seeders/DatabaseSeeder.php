@@ -7,6 +7,7 @@ namespace Database\Seeders;
 use App\Models\Category;
 use App\Models\CategoryProduct;
 use App\Models\Coupon;
+use App\Models\Image;
 use App\Models\Product;
 use App\Models\ProductImage;
 use Illuminate\Database\Seeder;
@@ -68,10 +69,10 @@ class DatabaseSeeder extends Seeder
         
         
         
-        \App\Models\Category::factory(6)->create();
-        \App\Models\Category::factory(30)->create()->each(function(Category $category)  {
-            $category->update(['parent_id' => rand(1, 6)]);
-        });
+        // \App\Models\Category::factory(6)->create();
+        // \App\Models\Category::factory(30)->create()->each(function(Category $category)  {
+        //     $category->update(['parent_id' => rand(1, 6)]);
+        // });
 
         $urls = [
             'http://127.0.0.1:8000/images/products/1.jpg',
@@ -79,18 +80,19 @@ class DatabaseSeeder extends Seeder
             'http://127.0.0.1:8000/images/products/3.jpg',
         ];
     
-        \App\Models\Product::factory(200)->create()->each(function(Product $product) use($urls) {
-            foreach ($urls as $url) {
-                ProductImage::create([
-                    'product_id' => $product->id,
-                    'url' => $url,
-                ]);
-            } 
+        // \App\Models\Product::factory(200)->create()->each(function(Product $product) use($urls) {
+        //     foreach ($urls as $url) {
+        //         $image = Image::create(['url' => $url,]);
+        //         ProductImage::create([
+        //             'product_id' => $product->id,
+        //             'image_id' => $image->id,
+        //         ]);
+        //     } 
 
-            for ($i=1; $i <= 3 ; $i++) { 
-                CategoryProduct::create(['product_id' => $product->id,'category_id'=>rand(1, 36)]);
-            }   
-        });
+        //     for ($i=1; $i <= 3 ; $i++) { 
+        //         CategoryProduct::create(['product_id' => $product->id,'category_id'=>rand(1, 36)]);
+        //     }   
+        // });
 
         Coupon::factory()->create(); // seeding test-coupon
        

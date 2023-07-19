@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Currency\CurrencyController;
 use App\Http\Controllers\Dashboard\CategoryController;
 use App\Http\Controllers\Dashboard\DashboardController;
 use App\Http\Controllers\Dashboard\ProductController as DashboardProductController;
@@ -148,12 +149,16 @@ Route::group([
     'middleware' => ['auth', 'role:Admin'],
     'as' => 'admin.'
 ], function () {
+    // product
     Route::post('products/add', [DashboardProductController::class, 'add'])->name('products.add');
     Route::post('products/{product}/update', [DashboardProductController::class, 'update'])->name('products.update');
     Route::get('products/add-new-product', [DashboardProductController::class, 'index'])->name('products.add.new');
     Route::post('products/{product}/delete', [DashboardProductController::class, 'delete'])->name('products.delete');
     Route::post('products/{product}/image/{image}/delete', [DashboardProductController::class, 'deleteImage'])->name('products.image.delete');
     Route::post('products/{product}/images/upload', [DashboardProductController::class, 'uploadImages'])->name('products.images.upload');
+    Route::post('products/{product}/add-or-update-meta', [DashboardProductController::class, 'addOrUpdateMeta'])->name('products.add.or.update.mmeta');
+    
+    Route::post('products/bulk-upload-or-update', [DashboardProductController::class, 'BulkUploadOrUpdate'])->name('products.bulk.upload.or.update');
 
 
 
@@ -165,6 +170,9 @@ Route::group([
 
     // orders
     Route::get('/orders', [DashboardController::class, 'orders'])->name('orders');
+
+
+
 });
 
 
@@ -212,3 +220,8 @@ Route::group([
     // stripe payments and the webhook route is in api.php
     Route::get('payment-stripe/{order}', [StripeController::class, 'payment'])->name('stripe');
 });
+
+
+
+// change currency
+Route::get('change-currency', [CurrencyController::class, 'changeCurrency'])->name('currency.change');

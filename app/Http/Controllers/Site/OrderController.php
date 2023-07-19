@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Site;
 
+use App\Helpers\Helper;
 use App\Http\Controllers\Controller;
 use App\Models\Order;
 use App\Models\Product;
@@ -90,12 +91,11 @@ class OrderController extends Controller
 
         //  calc total price
         foreach ($user->cart->items as $item) {
-            $total_price += $item->product->price * $item->qty;
+            $total_price += Helper::getPriceInInt($item->product->price) * $item->qty;
         }
 
         $orderData = [
             'user_id' => $user->id,
-
             'shipping_address_id' => $shipping_address->id,
             'billing_address_id' => $request->billing_address_same_as_shipping_address ? $shipping_address->id : $billing_address->id,
         ];
@@ -104,13 +104,13 @@ class OrderController extends Controller
         if (isset($validator['coupon'])) {
             // get the discount money
             $coupon = json_decode($validator['coupon']);
-            if(isset($coupon->discount_precent) && isset($coupon->limit)){
+            if (isset($coupon->discount_precent) && isset($coupon->limit)) {
                 $discountAmmount = $total_price * $coupon->discount_precent / 100;
-                
+
                 if ($coupon->limit < $discountAmmount) {
                     $discountAmmount = $coupon->limit;
                 }
-                
+
                 $orderData = [
                     ...$orderData,
                     'discount' => $discountAmmount,
@@ -118,7 +118,7 @@ class OrderController extends Controller
                 ];
             }
         }
-        
+
         // calc shipping cost
         if ($total_price <= 24) {
             $shipping_cost = 15;
@@ -133,18 +133,18 @@ class OrderController extends Controller
         } else {
             $shipping_cost = 35;
         }
-        
+
         // adding shipping cost
-        
-        
+
+
         // creating order with its addresses
-        
+
         $orderData = [
             ...$orderData,
             'total_price' => $total_price,
-            'shipping_cost' => $shipping_cost,
+            'shipping_cost' => Helper::getPriceInInt($shipping_cost),
         ];
-        
+
         $order = Order::create($orderData);
 
         // attaching products to order

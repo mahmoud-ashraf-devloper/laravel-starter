@@ -1,7 +1,8 @@
 import React from 'react'
 import DashboardLayout from '../../Layouts/DashboardLayout'
 
-function Home() {
+function Home({data}) {
+    console.log(data);
     return (
         <DashboardLayout>
             <div className="w-full px-6 py-6 mx-auto">
@@ -18,7 +19,7 @@ function Home() {
                                             <p className="mb-0 font-sans font-semibold leading-normal text-sm">Products</p>
                                             <h5 className="mb-0 font-bold">
 
-                                                <span className="leading-normal text-sm font-weight-bolder text-lime-500">+55%</span>
+                                                <span className="leading-normal text-sm font-weight-bolder text-lime-500">{data.products}</span>
                                             </h5>
                                         </div>
                                     </div>
@@ -43,7 +44,7 @@ function Home() {
                                         <div>
                                             <p className="mb-0 font-sans font-semibold leading-normal text-sm">Categories</p>
                                             <h5 className="mb-0 font-bold">
-                                                <span className="leading-normal text-sm font-weight-bolder text-lime-500">+3%</span>
+                                                <span className="leading-normal text-sm font-weight-bolder text-lime-500">{data.categories}</span>
                                             </h5>
                                         </div>
                                     </div>
@@ -68,7 +69,7 @@ function Home() {
                                         <div>
                                             <p className="mb-0 font-sans font-semibold leading-normal text-sm">Users</p>
                                             <h5 className="mb-0 font-bold">
-                                                <span className="leading-normal text-red-600 text-sm font-weight-bolder">-2%</span>
+                                                <span className="leading-normal text-red-600 text-sm font-weight-bolder">{data.users}</span>
                                             </h5>
                                         </div>
                                     </div>
@@ -93,7 +94,7 @@ function Home() {
                                         <div>
                                             <p className="mb-0 font-sans font-semibold leading-normal text-sm">Orders</p>
                                             <h5 className="mb-0 font-bold">
-                                                <span className="leading-normal text-sm font-weight-bolder text-lime-500">+5%</span>
+                                                <span className="leading-normal text-sm font-weight-bolder text-lime-500">{data.orders.count}</span>
                                             </h5>
                                         </div>
                                     </div>
@@ -118,7 +119,55 @@ function Home() {
                                         <div>
                                             <p className="mb-0 font-sans font-semibold leading-normal text-sm ">Total Sales</p>
                                             <h5 className="mb-0 font-bold text-lime-500">
-                                                <span className="leading-normal text-sm font-weight-bolder text-lime-500">+5%</span>
+                                                <span className="leading-normal text-sm font-weight-bolder text-lime-500">${data.orders.total_payments}</span>
+                                            </h5>
+                                        </div>
+                                    </div>
+                                    <div className="px-3 text-right basis-1/3">
+                                        <div
+                                            className="flex justify-center items-center w-12 h-12 text-center text-white rounded-lg bg-gradient-to-tl from-blue-700 to-blue-500">
+                                            <i className="fa-brands fa-adversal fa-lg"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {/* <!-- card6 --> */}
+                    <div className="w-full max-w-full px-3 my-4 sm:w-1/2 sm:flex-none xl:w-1/4">
+                        <div
+                            className="relative flex flex-col min-w-0 break-words bg-white dark:bg-slate-800 dark:text-white shadow-soft-xl rounded-2xl bg-clip-border">
+                            <div className="flex-auto p-4">
+                                <div className="flex flex-row -mx-3">
+                                    <div className="flex-none w-2/3 max-w-full px-3">
+                                        <div>
+                                            <p className="mb-0 font-sans font-semibold leading-normal text-sm ">Total Discounts</p>
+                                            <h5 className="mb-0 font-bold text-lime-500">
+                                                <span className="leading-normal text-sm font-weight-bolder text-lime-500">${data.orders.discounts}</span>
+                                            </h5>
+                                        </div>
+                                    </div>
+                                    <div className="px-3 text-right basis-1/3">
+                                        <div
+                                            className="flex justify-center items-center w-12 h-12 text-center text-white rounded-lg bg-gradient-to-tl from-blue-700 to-blue-500">
+                                            <i className="fa-brands fa-adversal fa-lg"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {/* <!-- card6 --> */}
+                    <div className="w-full max-w-full px-3 my-4 sm:w-1/2 sm:flex-none xl:w-1/4">
+                        <div
+                            className="relative flex flex-col min-w-0 break-words bg-white dark:bg-slate-800 dark:text-white shadow-soft-xl rounded-2xl bg-clip-border">
+                            <div className="flex-auto p-4">
+                                <div className="flex flex-row -mx-3">
+                                    <div className="flex-none w-2/3 max-w-full px-3">
+                                        <div>
+                                            <p className="mb-0 font-sans font-semibold leading-normal text-sm ">Total Revenew</p>
+                                            <h5 className="mb-0 font-bold text-lime-500">
+                                                <span className="leading-normal text-sm font-weight-bolder text-lime-500">${(data.orders.total_payments - data.orders.discounts)}</span>
                                             </h5>
                                         </div>
                                     </div>

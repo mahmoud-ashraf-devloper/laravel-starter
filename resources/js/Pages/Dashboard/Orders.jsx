@@ -29,7 +29,7 @@ function Orders({ orders, message, error, ziggy, user }) {
           </div>
         }
 
-        <div className="flex flex-col md:flex-row items-stretch md:items-center md:space-x-3 space-y-3 md:space-y-0 justify-between  py-4 border-t dark:border-gray-700 bg-white px-4 rounded-t-md">
+        <div className="flex flex-col md:flex-row items-stretch md:items-center md:space-x-3 space-y-3 md:space-y-0 justify-between  py-4 border-t dark:border-gray-700 bg-white dark:bg-slate-800 px-4 rounded-t-md">
           <div className="w-full md:w-1/2">
             <form className="flex items-center">
               <label htmlFor="simple-search" className="sr-only">Search</label>
@@ -351,9 +351,9 @@ function Orders({ orders, message, error, ziggy, user }) {
           </div>
         </div>
 
-        <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
+        <div className="relative overflow-x-auto shadow-md sm:rounded-b-lg">
           <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
-            <thead className="text-xs text-gray-700 uppercase bg-gray-100 dark:bg-gray-700 dark:text-gray-400">
+            <thead className="text-xs text-gray-700 uppercase bg-gray-100 dark:bg-slate-800 dark:text-gray-400">
               <tr>
                 <th scope="col" className="px-6 py-3">
                   Order Id
@@ -400,7 +400,7 @@ function Orders({ orders, message, error, ziggy, user }) {
             <tbody>
               {
                 orders.data.map((item, index) => (
-                  <tr key={index} className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                  <tr key={index} className="bg-white border-b dark:bg-gray-800  dark:border-gray-700">
                     <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                       {item.id}
                     </th>

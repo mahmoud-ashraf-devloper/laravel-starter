@@ -2,10 +2,10 @@ import React, { useEffect } from 'react'
 import DashboardLayout from '../../Layouts/DashboardLayout'
 import { useState } from 'react';
 
-import AddNewCategory from '../../Components/Dashboard/Modals/AddNewCategory';
-import UpdateCategoryModal from '../../Components/Dashboard/Modals/UpdateCategoryModal';
+import AddNewCategory from '../../Components/Dashboard/Modals/Category/AddNewCategory';
+import UpdateCategoryModal from '../../Components/Dashboard/Modals/Category/UpdateCategoryModal';
 import { usePage } from '@inertiajs/inertia-react';
-import DeleteCategoryModal from '../../Components/Dashboard/Modals/DeleteCategoryModal';
+import DeleteCategoryModal from '../../Components/Dashboard/Modals/Category/DeleteCategoryModal';
 
 function Categories({ user, ziggy }) {
 

@@ -20,7 +20,7 @@ function Payment({ order }) {
 
     return (
         <SiteLayout>
-            <div className="max-w-7xl pt-10 mx-auto px-4 sm:px-6 lg:px-8 ">
+            <div className="max-w-7xl pt-10 mx-auto px-4 sm:px-6 lg:px-8 mt-20">
 
                 <ol className="flex items-center py-6">
                     <li className="relative w-full mb-6">

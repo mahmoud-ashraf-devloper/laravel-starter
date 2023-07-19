@@ -21,7 +21,6 @@ class Review extends Model
 
     public function getCreatedAtAttribute()
     {
-        
         return Carbon::make($this->attributes['created_at'])->diffForHumans();
     }
 

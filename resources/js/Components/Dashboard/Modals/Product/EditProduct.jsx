@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react'
 import { toast, ToastContainer } from 'react-toastify';
 import "react-toastify/dist/ReactToastify.css";
-import { TextEditor } from '../CKEditor/TextEditor';
 import axios from 'axios';
 import Select from 'react-select';
+import { TextEditor } from '../../CKEditor/TextEditor';
 
 function EditProduct({ product, categories, setProducts }) {
     const [imageToDelete, setImageToDelete] = useState(null);

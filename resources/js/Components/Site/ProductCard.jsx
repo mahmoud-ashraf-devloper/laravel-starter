@@ -1,7 +1,9 @@
 import React from 'react'
 import AddToCartButton from './AddToCartButton'
+import { usePage } from '@inertiajs/inertia-react'
 
 function ProductCard({ product }) {
+    const {currency} = usePage().props
     return (
         <div
             className="w-full bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 hover:shadow-xl overflow-hidden">
@@ -58,7 +60,7 @@ function ProductCard({ product }) {
                 </div>
             </a>
             <div className="px-3 flex items-center justify-between">
-                <p className="text-lg font-semibold text-black dark:text-white cursor-auto my-3">${product.price}
+                <p className="text-lg font-semibold text-black dark:text-white cursor-auto my-3">{currency.symbol}{product.price}
                 </p>
                 
 

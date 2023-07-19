@@ -3,14 +3,20 @@
 namespace App\Http\Controllers\Dashboard;
 
 use App\Http\Controllers\Controller;
+use App\Jobs\ProductImportBatchJob;
 use App\Models\Category;
+use App\Models\Image;
+use App\Models\MetaData;
 use App\Models\Product;
 use App\Models\ProductImage;
 use App\Models\Profile;
+use Illuminate\Bus\Batch;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Bus;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use Inertia\Inertia;
+use Throwable;
 
 class ProductController extends Controller
 {
@@ -31,11 +37,11 @@ class ProductController extends Controller
             'categories.*.value' => 'required|exists:categories,id',
             "images.*" =>  'required|image|max:2048',
         ]);
-        
+
         if ($data->fails()) {
             return response()->json(['success' => false, 'errors' => $data->errors()]);
         }
-        
+
         $data = $data->validated();
 
 
@@ -49,7 +55,7 @@ class ProductController extends Controller
             $this->saveImages($images, $product);
             array_pop($data);
         }
-        
+
         if (isset($categories)) {
             $this->syncCategories($categories, $product);
             array_pop($data);
@@ -61,6 +67,47 @@ class ProductController extends Controller
             'success' => true,
             'products' => $data,
         ]);
+    }
+
+    public function BulkUploadOrUpdate(Request $request)
+    {
+        $request->validate([
+            'file' => 'required'
+        ]);
+
+        $file = $request->file;
+
+        // Saving the file to storage for reading it as CSV
+        // Otherwise, it will break even faster.
+        $file = $file->store('csv', ['disk' => 'public']);
+
+
+
+
+        dispatch(new ProductImportBatchJob($file));
+    }
+
+    public static function saveOrUpdateMetaTags($data, $product)
+    {
+        if ($product->meta) {
+            $product->meta->update($data);
+        } else {
+            $meta = MetaData::create($data);
+            $product->update(['meta_id' => $meta->id]);
+        }
+    }
+
+    public function addOrUpdateMeta(Request $request, Product $product)
+    {
+        $request->validate([
+            'meta_desc' => 'required|string',
+            'meta_title' => 'required|string',
+            'meta_keywords' => 'required|string',
+        ]);
+
+        static::saveOrUpdateMetaTags($request->all(), $product);
+
+        return response()->json(['success' => true, 'message' => 'Product Data Updated Successfully']);
     }
 
     public function uploadImages(Request $request, Product $product)
@@ -100,9 +147,18 @@ class ProductController extends Controller
                 array_push($imagesNames, ['url' => env('APP_URL') . '/images/products/' . $imageName, 'product_id' => $product->id]);
             }
 
-            $product->images()->insert($imagesNames);
+            static::insertImages($imagesNames, $product);
         });
         return true;
+    }
+
+
+    public static function insertImages($imagesNames, $product)
+    {
+        foreach ($imagesNames as $image) {
+            $image = Image::create($image);
+            $product->images()->attach($image);
+        };
     }
 
 
@@ -124,11 +180,11 @@ class ProductController extends Controller
             "images.*" =>  'image|max:2048',
         ]);
 
-        
+
         if ($data->fails()) {
             return response()->json(['success' => false, 'errors' => $data->errors()]);
         }
-        
+
         $data = $data->validated();
 
 
@@ -137,7 +193,7 @@ class ProductController extends Controller
             $this->saveImages($data['images'], $product);
             array_pop($data);
         }
-        
+
         if (isset($data['categories'])) {
             $this->syncCategories($data['categories'], $product);
             array_pop($data);
@@ -154,7 +210,8 @@ class ProductController extends Controller
         ]);
     }
 
-    public function syncCategories($categories, $product) {
+    public function syncCategories($categories, $product)
+    {
         $categoriesIds = [];
         foreach ($categories as $key => $value) {
             array_push($categoriesIds, $value['value']);

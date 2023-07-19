@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::create('product_images', function (Blueprint $table) {
             $table->id();
-            $table->string('url');
             $table->foreignId('product_id')->references('id')->on('products')->onDelete('CASCADE');
+            $table->foreignId('image_id')->references('id')->on('images')->onDelete('CASCADE');
         });
     }
 

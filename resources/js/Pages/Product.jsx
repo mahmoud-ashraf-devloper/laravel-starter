@@ -5,15 +5,23 @@ import SiteLayout from '../Layouts/SiteLayout';
 import ProductCard from '../Components/Site/ProductCard';
 import AddToCartButton from '../Components/Site/AddToCartButton';
 import Reviews from '../Components/Site/Reviews';
+import DOMPurify from "dompurify";
+import parse from "html-react-parser";
+
 
 
 function Product() {
     const { product, related } = usePage().props;
+    const {currency} = usePage().props
+    const cleanHTML = DOMPurify.sanitize(product.desc, {
+      USE_PROFILES: { html: true },
+    });
+
     return (
         <SiteLayout>
             <section>
                 <div className="antialiased">
-                    <div className="py-6">
+                    <div className="py-10">
                         {/* <!-- Breadcrumbs --> */}
                         <div className="max-w-7xl mx-auto px-4 pt-10 sm:px-6 lg:px-8">
                             <div className="flex items-center space-x-2 text-gray-400 text-sm">
@@ -45,9 +53,8 @@ function Product() {
                                                 {
                                                     product.images.map((image, index) => (
 
-                                                        <div>
+                                                        <div key={index}>
                                                             <img
-                                                                key={index}
                                                                 className="object-contain h-full w-full"
                                                                 alt="Product Image"
                                                                 src={image.url}
@@ -61,15 +68,15 @@ function Product() {
                                 </div>
                                 <div className="md:flex-1 px-4">
                                     <h2
-                                        className="dark:text-white mb-2 leading-tight tracking-tight font-bold text-gray-800 text-2xl md:text-3xl">
+                                        className="dark:text-white my-2 mt-4 leading-tight tracking-tight font-bold text-gray-800 text-2xl md:text-3xl">
                                         {product.title}</h2>
                                     <div className="text-gray-500 text-sm flex space-x-2">
                                         <span>Categories </span>
-                                        <ul className="flex space-x-2">
+                                        <ul className="flex md:space-x-2 flex-wrap">
                                             {
                                                 product.categories.map(item => (
                                                     <li key={item.id}><a href={route('category.products', item.slug)}
-                                                        className="text-blue-600 hover:underline">#{item.name}</a></li>
+                                                        className="text-xs md:text-md text-blue-600 hover:underline">#{item.name}</a></li>
                                                 ))
                                             }
                                         </ul>
@@ -78,7 +85,7 @@ function Product() {
                                     <div className="flex items-center space-x-4 my-4">
                                         <div>
                                             <div className="rounded-lg  flex py-2 px-3 font-bold text-blue-600 text-3xl">
-                                                <span className="">$</span>
+                                                <span className="">{currency.symbol}</span>
                                                 <span className="">{product.price}</span>
                                             </div>
                                         </div>
@@ -88,8 +95,8 @@ function Product() {
                                         </div>
                                     </div>
 
-                                    <p className="text-gray-500 dark:text-gray-400">
-                                        {product.desc}
+                                    <p className="text-gray-500 dark:text-gray-400 flex flex-wrap w-20">
+                                        {parse(cleanHTML)}
                                     </p>
 
                                     <div className="flex py-4 space-x-4">
@@ -102,7 +109,7 @@ function Product() {
                 </div>
             </section>
 
-            <section className="max-w-7xl md:mx-auto px-4 sm:px-6 lg:px-8 mt-44 md:mt-4">
+            <section className="max-w-7xl md:mx-auto px-4 sm:px-6 lg:px-8 mt-56 md:mt-4 ">
                 {/* {{-- Reviews --}} */}
                 <Reviews product_id={product.id} product_slug={product.slug} />
             </section>

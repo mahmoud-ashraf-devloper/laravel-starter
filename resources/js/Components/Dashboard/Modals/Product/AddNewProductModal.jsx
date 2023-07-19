@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from 'react'
 import { toast, ToastContainer } from 'react-toastify';
 import "react-toastify/dist/ReactToastify.css";
-import { TextEditor } from '../CKEditor/TextEditor';
+import { TextEditor } from '../../CKEditor/TextEditor';
 import Select from 'react-select';
 
 
@@ -28,8 +28,6 @@ function AddNewProductModal({ categories, setProducts }) {
     const [currentCategories, setCurrentCategories] = useState([]);
     const handleMultiSelect = (e) => {
         setCurrentCategories(e)
-        // formData.categories = currentCategories
-        // formData.set('categories',e);
     }
 
     useEffect(() => {
@@ -48,6 +46,7 @@ function AddNewProductModal({ categories, setProducts }) {
 
     const resetForm = () => {
         setImagesPreview([]);
+        setCurrentCategories([])
         setFormData({
             title: '',
             price: 0,
@@ -63,7 +62,6 @@ function AddNewProductModal({ categories, setProducts }) {
             images: []
         })
 
-        formData = new FormData()
     }
 
     const handleSubmit = async (e) => {

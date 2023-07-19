@@ -230,7 +230,7 @@ function Checkout() {
 
                 {/* <!-- Form --> */}
                 <form onSubmit={handleSubmit}>
-                    <h1 className='text-lg font-bold pb-4'>Shipping Address</h1>
+                    <h1 className='text-lg font-bold pb-4 dark:text-white'>Shipping Address</h1>
                     <div className="grid gap-4 mb-4 sm:grid-cols-2">
                         <div>
                             <label htmlFor="shipping_first_name" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">First
@@ -334,7 +334,7 @@ function Checkout() {
 
                     <div className='flex mt-10 space-x-2'>
                         <input onChange={() => { setSameAsShippingAddress(!sameAsShippingAddress) }} defaultChecked={sameAsShippingAddress} type="checkbox" name="sameAsShippingAddress" id="sameAsShippingAddress"
-                            className="bg-gray-50 border border-gray-300 text-blue-600 text-sm rounded-lg focus:ring-blue-600 focus:border-blue-600  p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                            className="bg-gray-50 border border-gray-300 text-blue-600 text-sm rounded-lg focus:ring-blue-600 focus:border-blue-600  p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-blue-600 dark:focus:ring-blue-500 dark:focus:border-blue-500"
                             placeholder="SameAsShippingAddress" />
                         <label htmlFor="sameAsShippingAddress" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Billing address same as Shipping Address</label>
                     </div>
@@ -343,7 +343,7 @@ function Checkout() {
                         !sameAsShippingAddress &&
                         // Billing Address Form 
                         <>
-                            <h1 className='text-lg font-bold py-10'>Billing Address</h1>
+                            <h1 className='text-lg font-bold py-10 dark:text-white'>Billing Address</h1>
 
                             <div className="grid gap-4 mb-4 sm:grid-cols-2">
                                 <div>

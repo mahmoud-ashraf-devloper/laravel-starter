@@ -1,5 +1,5 @@
 import React from 'react'
-import Categories from './../../../Pages/Dashboard/Categories';
+// import Categories from './../../../Pages/Dashboard/Categories';
 import { usePage } from '@inertiajs/inertia-react';
 
 function ProductPreview({ product }) {

@@ -48,7 +48,7 @@ function Profile({ user, profile }) {
   return (
 
     <SiteLayout>
-      <section className="bg-white dark:bg-gray-900">
+      <section className="bg-white dark:bg-gray-900 mt-14">
         <div className="py-8 px-4 mx-auto max-w-7xl lg:py-16 grid md:grid-cols-8 gap-10">
           <div className="col-span-2 dark:text-white">
             <div className="p-3">
@@ -89,7 +89,7 @@ function Profile({ user, profile }) {
             <div>
               <h2 className="mb-4 text-xl font-bold text-gray-900 dark:text-white">Update Profile Picture</h2>
               <form onSubmit={uploadImage} encType="multipart/form-data">
-                <input onChange={handleImageChange} name="image" type="file" accept="image/*" />
+                <input className='text-white' onChange={handleImageChange} name="image" type="file" accept="image/*" />
                 <button type="submit"
                   className="inline-flex max-w-fit justify-center items-center px-5 py-2.5 mt-2 sm:mt-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg focus:ring-4 focus:ring-blue-200 dark:focus:ring-blue-900 hover:bg-blue-800">
                   Update Profile

@@ -48,7 +48,7 @@ function Navbar() {
     }, []);
     return (
         <nav
-            className="bg-white border-b border-gray-200 px-4 py-2.5 dark:bg-gray-800 dark:border-gray-700 fixed left-0 right-0 top-0 z-30">
+            className="bg-white border-b border-gray-200 px-4 py-2.5 dark:bg-gray-800 dark:border-gray-700 fixed left-0 right-0 top-0 z-40">
             <div className="flex flex-wrap justify-between items-center">
                 <div className="flex justify-start items-center">
                     <button data-drawer-target="drawer-navigation" data-drawer-toggle="drawer-navigation"

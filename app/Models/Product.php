@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Helpers\Helper;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -50,11 +51,15 @@ class Product extends Model
         return 'slug';
     }
 
+    public function getPriceAttribute($price)
+    {
+        return Helper::getPrice($price);
+    }
 
 
     public function images()
     {
-        return $this->hasMany(ProductImage::class);
+        return $this->belongsToMany(Image::class, 'product_images');
     }
 
     public function meta()
@@ -77,7 +82,4 @@ class Product extends Model
     {
         return $this->belongsToMany(Review::class, 'product_reviews');
     }
-
-
-
 }

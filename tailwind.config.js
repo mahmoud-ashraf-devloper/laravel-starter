@@ -23,5 +23,6 @@ export default {
         forms,
         require('flowbite/plugin'),
         require('chart.js'),
+        require('tailwindcss-patterns'),
     ],
 };

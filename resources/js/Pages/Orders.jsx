@@ -1,8 +1,9 @@
 import React from 'react'
 import SiteLayout from '../Layouts/SiteLayout'
+import { usePage } from '@inertiajs/inertia-react'
 
 function Orders({ orders, message, error }) {
-    console.log('hi', orders);
+    const {currency} = usePage().props
     return (
         <SiteLayout>
             <div className="max-w-7xl mx-auto mt-20">
@@ -92,23 +93,23 @@ function Orders({ orders, message, error }) {
                                             <div className=''>
                                                 <div className="flex justify-between mt-1 mb-2">
                                                     <span className="font-semibold text-sm uppercase dark:text-white">({item.products.length}) Items </span>
-                                                    <span className="font-semibold text-sm dark:text-white">${item.total_price}</span>
+                                                    <span className="font-semibold text-sm dark:text-white">{currency.symbol}{item.total_price}</span>
                                                 </div>
                                                 <div className="flex justify-between mt-1 mb-2">
                                                     <span className="font-semibold text-sm uppercase text-red-500">Shipping Cost</span>
-                                                    <span className="font-semibold text-sm  text-red-500">+${item.shipping_cost}</span>
+                                                    <span className="font-semibold text-sm  text-red-500">+{currency.symbol}{item.shipping_cost}</span>
                                                 </div>
                                                 {
                                                     item.coupon_id
                                                     &&
                                                     <div className="flex justify-between mt-1 mb-2">
                                                         <span className="font-semibold text-sm uppercase text-green-500">Discount</span>
-                                                        <span className="font-semibold text-sm  text-green-500">-${item.discount}</span>
+                                                        <span className="font-semibold text-sm  text-green-500">-{currency.symbol}{item.discount}</span>
                                                     </div>
                                                 }
                                                 <div className="flex font-semibold justify-between py-2 text-sm uppercase">
                                                     <span className=" dark:text-white">Total cost</span>
-                                                    <span className=" dark:text-white">${item.total_price + item.shipping_cost - item.discount}</span>
+                                                    <span className=" dark:text-white">{currency.symbol}{item.total_price + item.shipping_cost - item.discount}</span>
                                                 </div>
                                             </div>
                                         </td>
@@ -129,6 +130,7 @@ function Orders({ orders, message, error }) {
                                                             <img className='hover:scale-105 transition-all ease-in-out rounded-lg w-10 h-10' src={item.images[0].url} alt={item.title} srcset="" />
                                                         </a>
                                                         <span>Q({item.pivot.quantity})</span>
+                                                        <span>({currency.symbol+(item.price * item.pivot.quantity).toFixed(2)})</span>
                                                     </div>
                                                 ))
                                             }

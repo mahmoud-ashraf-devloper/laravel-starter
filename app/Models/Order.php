@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Helpers\Helper;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -26,13 +27,14 @@ class Order extends Model
 
     public function getCreatedAtAttribute()
     {
-        
         return Carbon::make($this->attributes['created_at'])->diffForHumans();
     }
+
     public function products()
     {
         return $this->belongsToMany(Product::class, 'order_product')->withPivot(['quantity']);
     }
+
 
 
     public function trackingNumber()
@@ -53,5 +55,22 @@ class Order extends Model
     public function billing_address()
     {
         return $this->belongsTo(Address::class, 'billing_address_id', 'id');
+    }
+
+
+    // getters
+    public function getTotalPriceAttribute($total_price)
+    {
+        return Helper::getPrice($total_price);
+    }
+
+    public function getDiscountAttribute($discount)
+    {
+        return Helper::getPrice($discount);
+    }
+
+    public function getShippingCostAttribute($shipping_cost)
+    {
+        return Helper::getPrice($shipping_cost);
     }
 }

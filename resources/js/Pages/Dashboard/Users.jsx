@@ -1,13 +1,17 @@
 import React, { useEffect } from 'react'
 import DashboardLayout from '../../Layouts/DashboardLayout'
-import UpdateUserModal from '../../Components/Dashboard/Modals/UpdateUserModal';
+import UpdateUserModal from '../../Components/Dashboard/Modals/User/UpdateUserModal';
 import { useState } from 'react';
-import DeleteUSerModal from '../../Components/Dashboard/Modals/DeleteUSerModal';
+import DeleteUSerModal from '../../Components/Dashboard/Modals/User/DeleteUSerModal';
 import Pagination from '../../Components/Dashboard/Pagination';
 
 function Users({ users, ziggy, roles, permissions }) {
-  const [updateUser, setUpdateUser] = useState(users.data[0]);
-  const [deleteUser, setDeleteUser] = useState(users.data[0]);
+  const defaultUser={
+    name: '',
+    email: '',
+  }
+  const [updateUser, setUpdateUser] = useState(defaultUser);
+  const [deleteUser, setDeleteUser] = useState(defaultUser);
 
   useEffect(() => {
     console.log(updateUser);

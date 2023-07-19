@@ -1,5 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
-import Swal from 'sweetalert2';
+import { toast, ToastContainer } from 'react-toastify';
+import "react-toastify/dist/ReactToastify.css";
 import axios from 'axios';
 import { useDispatch } from "react-redux";
 import store from '../store'
@@ -21,7 +22,7 @@ const pushItemsToCart = (cartItems) => {
 
 
     if (totalPrice) {
-        store.dispatch(setTotalPrice(totalPrice));
+        store.dispatch(setTotalPrice(totalPrice.toFixed(2)));
     }
 
     if (cartItems.length == 0) {
@@ -68,13 +69,11 @@ export const cartSlice = createSlice({
                 let { items } = res.data.data
                 pushItemsToCart(items);
                 if (res.data.success == true) {
-                    Swal.fire({
-                        position: 'top-center',
-                        icon: 'success',
-                        title: 'Product Added To The Cart',
-                        showConfirmButton: false,
-                        timer: 1500
-                    });
+                    toast.success(`Product Added To The Cart`, {
+                        position: toast.POSITION.TOP_CENTER,
+                        autoClose: 1500
+                    })
+                    
                 }
             }).catch((error) => {
                 console.log('error has occured in Adding item the cart slice items', error);
@@ -92,13 +91,10 @@ export const cartSlice = createSlice({
                 console.log('increase', items, res);
                 pushItemsToCart(items);
                 if (res.data.success == true) {
-                    Swal.fire({
-                        position: 'top-center',
-                        icon: 'success',
-                        title: 'Product Quantity Increased',
-                        showConfirmButton: false,
-                        timer: 1500
-                    });
+                    toast.success(`Product Quantity Increased`, {
+                        position: toast.POSITION.TOP_CENTER,
+                        autoClose: 1500
+                    })
                 }
             }).catch((error) => {
                 console.log('error has occured in Increaseing item the cart slice items', error);
@@ -116,13 +112,10 @@ export const cartSlice = createSlice({
                 console.log('decrease', items);
                 pushItemsToCart(items);
                 if (res.data.success == true) {
-                    Swal.fire({
-                        position: 'top-center',
-                        icon: 'success',
-                        title: 'Product Quantity Decreased',
-                        showConfirmButton: false,
-                        timer: 1500
-                    });
+                    toast.success('Product Quantity Decreased', {
+                        position: toast.POSITION.TOP_CENTER,
+                        autoClose: 1500
+                    })
                 }
             }).catch((error) => {
                 console.log('error has occured in decrease item the cart slice items');
@@ -139,13 +132,10 @@ export const cartSlice = createSlice({
                 console.log('remove', res.data);
                 pushItemsToCart(items);
                 if (res.data.success == true) {
-                    Swal.fire({
-                        position: 'top-center',
-                        icon: 'success',
-                        title: 'Product Removed From The Cart',
-                        showConfirmButton: false,
-                        timer: 1500
-                    });
+                    toast.success('Product Removed From The Cart', {
+                        position: toast.POSITION.TOP_CENTER,
+                        autoClose: 1500
+                    })
                 }
             }).catch((error) => {
                 console.log('error has occured in Removeing item the cart slice items');

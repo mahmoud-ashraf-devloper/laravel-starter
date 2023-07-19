@@ -4,8 +4,11 @@ import { useDispatch, useSelector } from 'react-redux'
 import { decrementQ, incrementQ, removeFromCart } from '../features/cartSlice';
 import axios from 'axios';
 import Cookies from 'js-cookie';
+import { usePage } from '@inertiajs/inertia-react';
 
 function Cart() {
+    const {currency} = usePage().props
+
     let { cartItems, totalPrice } = useSelector(state => state.cart);
 
     const [coupon, setCoupon] = useState('');
@@ -64,7 +67,7 @@ function Cart() {
 
     return (
         <SiteLayout>
-            <div className="max-w-7xl mx-auto rounded-lg overflow-hidden px-2">
+            <div className="max-w-7xl mx-auto rounded-lg overflow-hidden px-2 mt-20">
                 <div className="grid gap-1 md:grid-cols-12 my-10 ">
                     <div className="px-2 py-4 md:px-4 md:py-8 overflow-x-auto md:col-span-8 w-full bg-white  dark:bg-gray-800  rounded-lg">
                         <div className=" relative overflow-x-auto sm:rounded-lg">
@@ -104,7 +107,7 @@ function Cart() {
 
                                                 </td>
                                                 <td className="px-6 py-4">
-                                                    ${item.price}
+                                                    {currency.symbol}{item.price}
                                                 </td>
                                                 <td className="px-6 py-4 text-right">
                                                     <div className="flex">
@@ -136,7 +139,7 @@ function Cart() {
                         <h1 className="text-blue-600 text-lg font-bold pb-4">Order Summary</h1>
                         <div className="flex justify-between mt-10 mb-5">
                             <span className="font-semibold text-sm uppercase dark:text-white">Items {cartItems.length}</span>
-                            <span className="font-semibold text-sm dark:text-white">${totalPrice}</span>
+                            <span className="font-semibold text-sm dark:text-white">{currency.symbol}{totalPrice}</span>
                         </div>
 
                         {
@@ -169,9 +172,9 @@ function Cart() {
                                     <span className='font-bold pr-2'>"{cookieCoupon.coupon}" Is Applied!</span>
                                     <span className='font-bold pr-2'>{cookieCoupon.discount_precent}%</span>
                                     <div className='flex font-bold pr-2 capitalize'>
-                                        <span className='pr-2'>${priceAfterCoupon}</span>
+                                        <span className='pr-2'>{currency.symbol}{priceAfterCoupon}</span>
                                         <span className='pr-2'>instead of</span>
-                                        <span className='pr-2 text-red-600 line-through'>${totalPrice}</span>
+                                        <span className='pr-2 text-red-600 line-through'>{currency.symbol}{totalPrice}</span>
 
                                     </div>
                                 </div>
@@ -189,7 +192,7 @@ function Cart() {
                         <div className="border-t mt-8">
                             <div className="flex font-semibold justify-between py-6 text-sm uppercase">
                                 <span className=" dark:text-white">Total cost</span>
-                                <span className=" dark:text-white">${priceAfterCoupon}</span>
+                                <span className=" dark:text-white">{currency.symbol}{priceAfterCoupon}</span>
                             </div>
                             <a href={route('checkout')}
                                 className="bg-blue-600 font-semibold hover:bg-blue-700 px-6 py-3 text-sm text-white uppercase w-full rounded-md">Proceed To Checkout</a>

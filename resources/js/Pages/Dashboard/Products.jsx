@@ -1,20 +1,35 @@
 import React from 'react'
 import DashboardLayout from '../../Layouts/DashboardLayout'
-import DeleteProduct from '../../Components/Dashboard/Modals/DeleteProduct'
-import ProductPreview from '../../Components/Dashboard/Modals/ProductPreview'
+import DeleteProduct from '../../Components/Dashboard/Modals/Product/DeleteProduct'
+import ProductPreview from '../../Components/Dashboard/Modals/Product/ProductPreview'
 import Pagination from './../../Components/Dashboard/Pagination';
 import { useState } from 'react';
-import EditProduct from '../../Components/Dashboard/Modals/EditProduct';
-import AddNewProductModal from '../../Components/Dashboard/Modals/AddNewProductModal';
-import { Link } from '@inertiajs/react';
+import EditProduct from '../../Components/Dashboard/Modals/Product/EditProduct';
+import AddNewProductModal from '../../Components/Dashboard/Modals/Product/AddNewProductModal';
 import { usePage } from '@inertiajs/inertia-react';
+import AddProductMeta from '../../Components/Dashboard/Modals/Product/AddOrUpdateProductMeta';
+import BulkUploadProducts from '../../Components/Dashboard/Modals/Product/BulkUploadProducts';
 
 function Products({ categories, ziggy, user }) {
+  const defaultProduct = {
+    title: '',
+    price: 0,
+    weight: 0,
+    desc: '',
+    short_desc: '',
+    tax_status: 0,
+    sku: '',
+    in_stock: 0,
+    visible: 0,
+    featured: 0,
+    categories: [],
+    images: []
+  };
   const [products, setProducts] = useState(usePage().props.products);
-  const [productPreview, setProductPreview] = useState(products.data[0]);
-  const [productEdit, setProductEdit] = useState(products.data[0]);
-  const [productDelete, setProductDelete] = useState(products.data[0]);
-  const [productMeta, setProdMeta] = useState(products.data[0]);
+  const [productPreview, setProductPreview] = useState(defaultProduct);
+  const [productEdit, setProductEdit] = useState(defaultProduct);
+  const [productDelete, setProductDelete] = useState(defaultProduct);
+  const [productToAddMetaTo, setProductToAddMetaTo] = useState(defaultProduct);
 
   const updateProductsState = (newProducts) => {
     setProducts(newProducts)
@@ -45,11 +60,22 @@ function Products({ categories, ziggy, user }) {
                 {
                   user.roles == 'Admin' &&
                   <div>
-                    <button type="button" id="createProductButton" data-modal-toggle="createProductModal" className="flex items-center justify-center text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">
+                    <button type="button" id="createProductButton" data-modal-toggle="createProductModal" className="w-full flex items-center justify-center text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">
                       <svg className="h-3.5 w-3.5 mr-1.5 -ml-1" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
                         <path clipRule="evenodd" fillRule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" />
                       </svg>
                       Add product
+                    </button>
+                  </div>
+                }
+                {
+                  user.roles == 'Admin' &&
+                  <div>
+                    <button type="button" id="createProductButton" data-modal-toggle="BulkUploadProductsModal" className="w-full flex items-center justify-center text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">
+                      <svg className="h-3.5 w-3.5 mr-1.5 -ml-1" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                        <path clipRule="evenodd" fillRule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" />
+                      </svg>
+                      Bulk Add Products
                     </button>
                   </div>
                 }
@@ -434,12 +460,12 @@ function Products({ categories, ziggy, user }) {
                               (user.roles.includes('Admin') || user.roles.includes('Editor'))
                               &&
 
-                              <button onClick={() => { setProdMeta(product) }} type="button" className="text-white py-2 px-3 flex items-center text-sm font-medium text-center  bg-slate-700 rounded-lg hover:bg-slate-800 focus:ring-4 focus:outline-none focus:ring-slate-300 dark:bg-slate-600 dark:hover:bg-slate-700 dark:focus:ring-slate-800">
+                              <button type="button" data-drawer-target="AddProductMetaModal" data-drawer-show="AddProductMetaModal" aria-controls="AddProductMetaModal" onClick={() => { setProductToAddMetaTo(product) }} className="text-white py-2 px-3 flex items-center text-sm font-medium text-center  bg-slate-700 rounded-lg hover:bg-slate-800 focus:ring-4 focus:outline-none focus:ring-slate-300 dark:bg-slate-600 dark:hover:bg-slate-700 dark:focus:ring-slate-800">
                                 <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mr-2 -ml-0.5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
                                   <path d="M17.414 2.586a2 2 0 00-2.828 0L7 10.172V13h2.828l7.586-7.586a2 2 0 000-2.828z" />
                                   <path fillRule="evenodd" d="M2 6a2 2 0 012-2h4a1 1 0 010 2H4v10h10v-4a1 1 0 112 0v4a2 2 0 01-2 2H4a2 2 0 01-2-2V6z" clipRule="evenodd" />
                                 </svg>
-                                Add Metta
+                                Add Or Update Meta
                               </button>
                             }
                             <button type="button" data-drawer-target="drawer-read-product-advanced" data-drawer-show="drawer-read-product-advanced" aria-controls="drawer-read-product-advanced" onClick={() => { setProductPreview(product) }} className="py-2 px-3 flex items-center text-sm font-medium text-center text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700">
@@ -475,9 +501,11 @@ function Products({ categories, ziggy, user }) {
       {/* <!-- End block --> */}
 
       <AddNewProductModal setProducts={updateProductsState} categories={categories} />
+      <AddProductMeta product={productToAddMetaTo} />
       <EditProduct setProducts={updateProductsState} product={productEdit} categories={categories} />
       <DeleteProduct setProducts={updateProductsState} product={productDelete} />
       <ProductPreview product={productPreview} />
+      <BulkUploadProducts />
     </DashboardLayout >
   )
 }
