@@ -2,6 +2,7 @@
 
 namespace App\Jobs;
 
+use App\Helpers\Helper;
 use App\Http\Controllers\Dashboard\ProductController;
 use App\Models\Category;
 use App\Models\Product;
@@ -78,7 +79,7 @@ class ProductImportProcessJob implements ShouldQueue
                 $productData = [
                     'title' => $row[2],
                     'desc' => $row[5],
-                    'price' => ($row[9] * 100),
+                    'price' => Helper::getPriceInInt($row[9]),
                     'weight' => $row[8] ?? 0,
                     'tax_status' => $row[6] === 'taxable' ? true : false,
                     'in_stock' => $row[7] === 1 ? true : false,

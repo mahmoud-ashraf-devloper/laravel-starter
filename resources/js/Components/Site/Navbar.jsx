@@ -5,7 +5,6 @@ import { useSelector } from 'react-redux';
 function Navbar() {
     const [cart, setCart] = useState([]);
     const { cartItems } = useSelector(state => state.cart);
-
     useEffect(() => {
         var themeToggleDarkIcon = document.getElementById('theme-toggle-dark-icon');
         var themeToggleLightIcon = document.getElementById('theme-toggle-light-icon');
@@ -57,7 +56,6 @@ function Navbar() {
     }, []);
 
     let { user, profile } = usePage().props;
-    console.log("🚀 ~ file: Navbar.jsx:60 ~ Navbar ~ profile:", profile)
     let { appName } = usePage().props;
     return (
         <nav className="bg-white dark:bg-gray-900 fixed w-full z-30 top-10 left-0 border-b border-gray-200 dark:border-gray-600">
@@ -88,38 +86,42 @@ function Navbar() {
 
                     {user.authenticated ?
                         <div className='mt-2'>
-                            <div>
-                                <button type="button"
-                                    className="flex text-sm rounded-full focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600"
-                                    aria-expanded="false" data-dropdown-toggle="dropdown-user">
-                                    <span className="sr-only">Open user menu</span>
 
-                                    {
-                                        user.profile ?
-                                            <img className="w-8 h-8 rounded-full"
-                                                src={'http://127.0.0.1:8000/images/profiles/' + user.profile.image_url} alt="user photo" />
-                                            :
-                                            <span className='w-8 h-8 rounded-full text-gray-500 flex justify-center items-center'>
-                                                <i className="fa-sharp fa-solid fa-user fa-xl"></i>
-                                            </span>
-                                    }
-                                </button>
-                            </div>
+                            <button type="button"
+                                className="flex items-center text-sm rounded-full focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600 mb-3"
+                                aria-expanded="false" data-dropdown-toggle="dropdown-user">
+                                <span className="sr-only">Open user menu</span>
+
+                                {
+                                    user.profile ?
+                                        <img className="w-10 h-10 rounded-full border-4 border-blue-600"
+                                            src={'http://127.0.0.1:8000/images/profiles/' + user.profile.image_url} alt="user photo" />
+                                        :
+                                        <span className='w-10 h-10 rounded-full   text-gray-500 flex justify-center items-center'>
+                                            <i className="fa-sharp fa-solid fa-user fa-xl"></i>
+                                        </span>
+                                }
+                            </button>
                             <div className="z-50 hidden my-4 text-base list-none bg-white divide-y divide-gray-100 rounded shadow dark:bg-gray-700 dark:divide-gray-600"
                                 id="dropdown-user">
-                                <div class="flex flex-col items-center pb-10 pt-3 w-56">
-                                    {
-                                        user.profile ?
-                                            <img className="w-24 h-24 mb-3 rounded-full shadow-lg"
-                                                src={'http://127.0.0.1:8000/images/profiles/' + user.profile.image_url} alt="user photo" />
-                                            :
-                                            <span className='w-24 h-24 mb-3 rounded-full shadow-lg text-gray-500 flex justify-center items-center'>
-                                                <i className="fa-sharp fa-solid fa-user fa-xl"></i>
-                                            </span>
-                                    }
-                                    <h5 class="mb-1 text-xl font-medium text-gray-900 dark:text-white">{user.name}</h5>
-                                    <span class="text-sm text-gray-500 dark:text-gray-400">{user.email}</span>
-                                    
+                                <div className="flex flex-col items-center pb-10 pt-3 w-56">
+                                    <div className='p-1 relative'>
+                                        <div className='border-r-4 border-blue-600 animate-spin  p-1 rounded-full absolute inset-0'></div>
+                                       <div className='relative'>
+                                       {
+                                            user.profile ?
+                                                <img className="w-24 h-24 border-2 border-blue-600 rounded-full shadow-lg"
+                                                    src={'http://127.0.0.1:8000/images/profiles/' + user.profile.image_url} alt="user photo" />
+                                                :
+                                                <span className='w-24 h-24  rounded-full shadow-lg text-gray-500 flex justify-center items-center'>
+                                                    <i className="fa-sharp fa-solid fa-user fa-xl"></i>
+                                                </span>
+                                        }
+                                       </div>
+                                    </div>
+                                    <h5 className="mb-1 text-xl font-medium text-gray-900 dark:text-white">{user.name}</h5>
+                                    <span className="text-sm text-gray-500 dark:text-gray-400">{user.email}</span>
+
                                 </div>
 
                                 <ul className="py-1 flex flex-col" role="none">

@@ -10,6 +10,7 @@ use App\Models\Coupon;
 use App\Models\Image;
 use App\Models\Product;
 use App\Models\ProductImage;
+use App\Models\Review;
 use Illuminate\Database\Seeder;
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
@@ -95,6 +96,7 @@ class DatabaseSeeder extends Seeder
         // });
 
         Coupon::factory()->create(); // seeding test-coupon
+        Review::factory(30_000)->create(); // seeding Reviews
        
 
         $this->call(CountriesTableSeeder::class);

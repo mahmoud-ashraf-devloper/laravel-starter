@@ -17,12 +17,12 @@ function ShoppingCart() {
             tabIndex="-1" aria-labelledby="shopping-cart">
 
             <div className="flex h-screen flex-col  bg-slate-50 shadow-xl  dark:bg-gray-800 dark:text-white">
-                <div className="flex items-start justify-between px-6 py-8 bg-blue-600">
-                    <h2 className="text-lg font-medium text-white" id="slide-over-title">Shopping cart
+                <div className="flex items-start justify-between px-6 py-8  bg-blue-100 dark:bg-slate-700">
+                    <h2 className="text-lg font-medium dark:text-white" id="slide-over-title">Shopping cart
                     </h2>
                     <div className="ml-3 flex h-7 items-center">
                         <button type="button" data-drawer-hide="shopping-cart" aria-controls="shopping-cart"
-                            className="text-white bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 absolute top-2.5 right-2.5 inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white">
+                            className="dark:text-red-600 bg-transparent hover:bg-red-200 hover:text-red-900 rounded-lg text-sm p-1.5 absolute top-2.5 right-2.5 inline-flex items-center dark:hover:bg-red-900 dark:hover:text-red-500">
                             <svg aria-hidden="true" className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"
                                 xmlns="http://www.w3.org/2000/svg">
                                 <path fillRule="evenodd"

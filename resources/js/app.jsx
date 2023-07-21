@@ -13,8 +13,9 @@ import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers'
 import store from './store';
 import { Provider } from 'react-redux';
 import StoreComponent from './Components/Site/StoreComponent';
+import { toast, ToastContainer } from 'react-toastify';
 
-
+import { Head } from '@inertiajs/react'
 
 createInertiaApp({
     progress: {
@@ -37,6 +38,7 @@ createInertiaApp({
             <Provider store={store}>
                 <App {...props}>
                 </App>
+                <ToastContainer />
             </Provider>
         )
     },

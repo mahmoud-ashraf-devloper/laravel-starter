@@ -30,7 +30,7 @@ function Reviews({ product_id, product_slug }) {
     ];
 
     return (
-            <div className="bg-white dark:bg-gray-900">
+            <div className="bg-slate-100 dark:bg-slate-800 py-4 px-3 rounded-md">
                 <div className="mx-auto">
                     <div className="flex justify-between items-center mb-6">
                         <h2 className="text-lg lg:text-2xl font-bold text-gray-900 dark:text-white">Reviews ({reviews.length})</h2>

@@ -11,7 +11,6 @@ function BulkUploadProducts() {
         let data = new FormData()
         data.append('file', excelFile);
         axios.post(route('admin.products.bulk.upload.or.update'), data).then(res => {
-            console.log(res);
             setExcelFile()
             setLoading(false)
             toast.success(`${res.data.message}`, {
@@ -30,9 +29,7 @@ function BulkUploadProducts() {
         });
     }
 
-    useEffect(()=>{
-        console.log(excelFile);
-    }, excelFile)
+
 
     const handleChange = (e) => {
         const key = e.target.id;

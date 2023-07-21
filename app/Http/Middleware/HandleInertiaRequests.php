@@ -6,6 +6,8 @@ use App\Helpers\Helper;
 use App\Http\Controllers\Site\ShoppingCartController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Bus;
+use Illuminate\Support\Facades\DB;
 use Inertia\Middleware;
 use Tightenco\Ziggy\Ziggy;
 
@@ -40,6 +42,7 @@ class HandleInertiaRequests extends Middleware
      */
     public function share(Request $request): array
     {
+       
         return array_merge(parent::share($request), [
             // Synchronously...
             'appName' => config('app.name'),

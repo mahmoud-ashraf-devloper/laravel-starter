@@ -58,7 +58,7 @@ class DashboardController extends Controller
 
     public function products()
     {
-        $data = Product::with(['categories', 'images'])->latest()->paginate(15);
+        $data = Product::with(['categories', 'images', 'meta'])->latest()->paginate(15);
         $categories = Category::latest()->get(['id', 'name']);
         return Inertia::render('Dashboard/Products', [
             'products' => $data,

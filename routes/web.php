@@ -2,7 +2,9 @@
 
 use App\Http\Controllers\Currency\CurrencyController;
 use App\Http\Controllers\Dashboard\CategoryController;
+use App\Http\Controllers\Dashboard\CsvController;
 use App\Http\Controllers\Dashboard\DashboardController;
+use App\Http\Controllers\Dashboard\JobBatchsController;
 use App\Http\Controllers\Dashboard\ProductController as DashboardProductController;
 use App\Http\Controllers\Site\ProductController;
 use App\Http\Controllers\Dashboard\ProfileController;
@@ -22,6 +24,10 @@ use Inertia\Inertia;
 
 use App\Http\Controllers\PaymentMethods\PaypalController;
 use App\Http\Controllers\PaymentMethods\StripeController;
+use Illuminate\Support\Facades\Bus;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
+use PhpOffice\PhpSpreadsheet\Calculation\TextData\Search;
 
 /*
 |--------------------------------------------------------------------------
@@ -103,8 +109,6 @@ Route::get('/shop', [ShopController::class, 'index'])->name('shop');
 Route::get('/shop/{category}', [ShopController::class, 'categoryProducts'])->name('category.products');
 
 
-
-
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
@@ -157,7 +161,7 @@ Route::group([
     Route::post('products/{product}/image/{image}/delete', [DashboardProductController::class, 'deleteImage'])->name('products.image.delete');
     Route::post('products/{product}/images/upload', [DashboardProductController::class, 'uploadImages'])->name('products.images.upload');
     Route::post('products/{product}/add-or-update-meta', [DashboardProductController::class, 'addOrUpdateMeta'])->name('products.add.or.update.mmeta');
-    
+
     Route::post('products/bulk-upload-or-update', [DashboardProductController::class, 'BulkUploadOrUpdate'])->name('products.bulk.upload.or.update');
 
 
@@ -172,7 +176,12 @@ Route::group([
     Route::get('/orders', [DashboardController::class, 'orders'])->name('orders');
 
 
+    // csv create
+    Route::get('create/csv/{rows}', [CsvController::class, 'create'])->name('create.csv');
+    Route::get('get/csv/blank', [CsvController::class, 'getBlank'])->name('get.blank.csv');
 
+    // baches
+    Route::get('batches', [JobBatchsController::class, 'getAllBatchs'])->name('batches');
 });
 
 
@@ -210,12 +219,12 @@ Route::group([
     Route::get('payment-paypal/{order}', [PaypalController::class, 'creaeteOrder'])->name('paypal.create.order');
     Route::get('cancel-paypal', [PaypalController::class, 'cancel'])->name('paypal.cancel');
     Route::get('payment/success', [PaypalController::class, 'success'])->name('paypal.success');
-    
-    
+
+
     Route::get('payment/status', function () {
         dd('payment_status');
     })->name('status');
-    
+
 
     // stripe payments and the webhook route is in api.php
     Route::get('payment-stripe/{order}', [StripeController::class, 'payment'])->name('stripe');
@@ -225,3 +234,8 @@ Route::group([
 
 // change currency
 Route::get('change-currency', [CurrencyController::class, 'changeCurrency'])->name('currency.change');
+
+
+
+// product search endpoint
+Route::post('/shop/search', [ProductController::class, 'search'])->name('search');

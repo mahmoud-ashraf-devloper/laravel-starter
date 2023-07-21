@@ -25,7 +25,7 @@ class ShopController extends Controller
 
     public function index()
     {
-        $products = Product::with('images', 'categories')->latest()->paginate(20);
+        $products = Product::with(['images', 'categories', 'meta'])->withAvg('reviews', 'stars')->latest()->paginate(20);
         $this->data['products'] = $products;
         return Inertia::render('Shop', $this->data);
     }
